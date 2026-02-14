@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import { AudioEngine } from "../audio/AudioEngine";
-import { Mp3Encoder } from "lamejs";
 import "./RecorderSection.css";
 
 interface RecorderSectionProps {
@@ -10,7 +9,6 @@ interface RecorderSectionProps {
 const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
-  const [format, setFormat] = useState<"mp3" | "wav">("mp3");
 
   const processorRef = useRef<ScriptProcessorNode | null>(null);
   const audioBuffersRef = useRef<Float32Array[]>([]);
@@ -117,44 +115,10 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
     setIsRecording(false);
 
     // Encode audio
-    const blob = format === "mp3" ? encodeMp3() : encodeWav();
+    const blob = encodeWav();
     if (blob) {
       setRecordedBlob(blob);
     }
-  };
-
-  const encodeMp3 = (): Blob | null => {
-    const audioContext = audioEngine.getAudioContext();
-    if (!audioContext || audioBuffersRef.current.length === 0) return null;
-
-    const sampleRate = audioContext.sampleRate;
-    const mp3Encoder = new Mp3Encoder(2, sampleRate, 192);
-
-    const mp3Data: number[] = [];
-    const buffers = audioBuffersRef.current;
-
-    // Process in stereo pairs
-    for (let i = 0; i < buffers.length; i += 2) {
-      const left = floatTo16BitPCM(buffers[i]);
-      const right = buffers[i + 1] ? floatTo16BitPCM(buffers[i + 1]) : left;
-
-      const mp3buf = mp3Encoder.encodeBuffer(left, right);
-      if (mp3buf.length > 0) {
-        for (let j = 0; j < mp3buf.length; j++) {
-          mp3Data.push(mp3buf[j]);
-        }
-      }
-    }
-
-    // Flush remaining data
-    const mp3buf = mp3Encoder.flush();
-    if (mp3buf.length > 0) {
-      for (let j = 0; j < mp3buf.length; j++) {
-        mp3Data.push(mp3buf[j]);
-      }
-    }
-
-    return new Blob([new Uint8Array(mp3Data)], { type: "audio/mp3" });
   };
 
   const encodeWav = (): Blob | null => {
@@ -188,7 +152,7 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
     const url = URL.createObjectURL(recordedBlob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `synth-recording-${Date.now()}.${format}`;
+    a.download = `synth-recording-${Date.now()}.wav`;
     a.click();
     URL.revokeObjectURL(url);
     setRecordedBlob(null);
@@ -196,15 +160,6 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
 
   return (
     <div className="recorder-section">
-      <select
-        value={format}
-        onChange={(e) => setFormat(e.target.value as "mp3" | "wav")}
-        disabled={isRecording}
-        className="format-select"
-      >
-        <option value="mp3">MP3</option>
-        <option value="wav">WAV</option>
-      </select>
       {!isRecording ? (
         <button onClick={startRecording} className="record-btn">
           ⏺ Record
