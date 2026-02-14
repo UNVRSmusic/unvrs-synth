@@ -35,7 +35,7 @@ export class AudioEngine {
   private delayMix: GainNode | null = null;
   private delayTime = 1.3;
   private delayFeedbackAmount = 0.2;
-  private delayMixAmount = 0.45;
+  private delayMixAmount = 0.3;
 
   private reverbNode: ConvolverNode | null = null;
   private reverbMix: GainNode | null = null;
@@ -43,6 +43,9 @@ export class AudioEngine {
 
   // Chaos mode - enables "happy accidents" (gain node accumulation)
   private chaosMode = false;
+
+  // Damage mode - allows duplicate MIDI note-ons for overdriven sound
+  private damageMode = false;
 
   private constructor() {}
 
@@ -143,7 +146,8 @@ export class AudioEngine {
     if (!this.audioContext) return;
 
     // Check if this note is already playing (prevent duplicates)
-    if (this.activeVoices.has(midiNote)) {
+    // Skip this check in damage mode to allow accumulation
+    if (!this.damageMode && this.activeVoices.has(midiNote)) {
       // Note is already playing, ignore duplicate
       return;
     }
@@ -400,6 +404,15 @@ export class AudioEngine {
 
   getChaosMode(): boolean {
     return this.chaosMode;
+  }
+
+  // Damage mode - allows duplicate MIDI notes for overdriven accumulation
+  setDamageMode(enabled: boolean): void {
+    this.damageMode = enabled;
+  }
+
+  getDamageMode(): boolean {
+    return this.damageMode;
   }
 
   getAudioContext(): AudioContext | null {

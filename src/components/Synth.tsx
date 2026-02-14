@@ -18,6 +18,7 @@ const Synth = ({ audioEngine }: SynthProps) => {
   const [midiDevices, setMidiDevices] = useState<WebMidi.MIDIInput[]>([]);
   const [octaveOffset, setOctaveOffset] = useState(0);
   const [chaosMode, setChaosMode] = useState(false);
+  const [damageMode, setDamageMode] = useState(false);
 
   useEffect(() => {
     // Setup MIDI
@@ -88,8 +89,8 @@ const Synth = ({ audioEngine }: SynthProps) => {
     const command = status >> 4;
 
     if (command === 9 && velocity > 0) {
-      // Note on - check if already playing to prevent duplicates
-      if (!activeNotes.has(note)) {
+      // Note on - in damage mode, allow duplicates for overdriven sound
+      if (damageMode || !activeNotes.has(note)) {
         audioEngine.noteOn(note, velocity / 127);
         setActiveNotes((prev) => new Set(prev).add(note));
       }
@@ -124,6 +125,12 @@ const Synth = ({ audioEngine }: SynthProps) => {
     audioEngine.setChaosMode(newChaosMode);
   };
 
+  const handleDamageToggle = () => {
+    const newDamageMode = !damageMode;
+    setDamageMode(newDamageMode);
+    audioEngine.setDamageMode(newDamageMode);
+  };
+
   return (
     <div className="synth">
       <div className="synth-header">
@@ -142,6 +149,13 @@ const Synth = ({ audioEngine }: SynthProps) => {
           title="Enable chaos mode - happy accidents from gain node accumulation"
         >
           🌀 Chaos
+        </button>
+        <button
+          className={`damage-toggle ${damageMode ? "active" : ""}`}
+          onClick={handleDamageToggle}
+          title="Enable damage mode - allow duplicate MIDI notes for overdriven sound"
+        >
+          ⚡ Damage
         </button>
         <RecorderSection audioEngine={audioEngine} />
       </div>
