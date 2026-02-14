@@ -218,6 +218,10 @@ export class AudioEngine {
   // Parameter setters
   setWaveType(type: OscillatorType): void {
     this.waveType = type;
+    // Update all active voices
+    this.activeVoices.forEach((voice) => {
+      voice.setWaveType(type);
+    });
   }
 
   setEnvelope(
@@ -230,18 +234,30 @@ export class AudioEngine {
     this.decay = decay;
     this.sustain = sustain;
     this.release = release;
+    // Update all active voices
+    this.activeVoices.forEach((voice) => {
+      voice.setEnvelope(attack, decay, sustain, release);
+    });
   }
 
   setFilter1(type: BiquadFilterType, frequency: number, q: number): void {
     this.filter1Type = type;
     this.filter1Frequency = frequency;
     this.filter1Q = q;
+    // Update all active voices
+    this.activeVoices.forEach((voice) => {
+      voice.setFilter1(type, frequency, q);
+    });
   }
 
   setFilter2(type: BiquadFilterType, frequency: number, q: number): void {
     this.filter2Type = type;
     this.filter2Frequency = frequency;
     this.filter2Q = q;
+    // Update all active voices
+    this.activeVoices.forEach((voice) => {
+      voice.setFilter2(type, frequency, q);
+    });
   }
 
   setDelay(time: number, feedback: number, mix: number): void {

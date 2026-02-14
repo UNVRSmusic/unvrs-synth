@@ -9,6 +9,7 @@ function App() {
 
   const initializeAudio = async () => {
     const engine = AudioEngine.getInstance();
+    console.log("engine", engine);
     await engine.initialize();
     setAudioEngine(engine);
     setIsInitialized(true);
