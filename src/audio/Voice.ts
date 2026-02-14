@@ -4,6 +4,7 @@ export class Voice {
   private filter1: BiquadFilterNode;
   private filter2: BiquadFilterNode;
   private audioContext: AudioContext;
+  private waveType: OscillatorType = "sine";
 
   private attack = 0.01;
   private decay = 0.1;
@@ -33,8 +34,15 @@ export class Voice {
   }
 
   setWaveType(type: OscillatorType): void {
+    this.waveType = type;
+    // If oscillator is currently playing, update it in real-time
     if (this.oscillator) {
-      this.oscillator.type = type;
+      try {
+        this.oscillator.type = type;
+      } catch (e) {
+        // Some browsers don't support real-time type change
+        console.warn("Could not change oscillator type in real-time");
+      }
     }
   }
 
@@ -73,8 +81,19 @@ export class Voice {
   noteOn(frequency: number, velocity: number): void {
     const now = this.audioContext.currentTime;
 
-    // Create new oscillator
+    // Clean up previous oscillator if exists
+    if (this.oscillator) {
+      try {
+        this.oscillator.stop(now);
+        this.oscillator.disconnect();
+      } catch (e) {
+        // Oscillator might already be stopped
+      }
+    }
+
+    // Create new oscillator with current wave type
     this.oscillator = this.audioContext.createOscillator();
+    this.oscillator.type = this.waveType; // Use stored wave type!
     this.oscillator.frequency.value = frequency;
     this.oscillator.connect(this.filter1);
 
