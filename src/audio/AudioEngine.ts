@@ -314,17 +314,6 @@ export class AudioEngine {
     }
   }
 
-  // Recording functionality
-  async startRecording(): Promise<MediaRecorder | null> {
-    if (!this.audioContext || !this.masterGain) return null;
-
-    const destination = this.audioContext.createMediaStreamDestination();
-    this.masterGain.connect(destination);
-
-    const mediaRecorder = new MediaRecorder(destination.stream);
-    return mediaRecorder;
-  }
-
   // Parameter getters
   getWaveType(): OscillatorType {
     return this.waveType;
@@ -437,6 +426,10 @@ export class AudioEngine {
 
   getDamageMode(): boolean {
     return this.damageMode;
+  }
+
+  getMasterGain(): GainNode | null {
+    return this.masterGain;
   }
 
   getAudioContext(): AudioContext | null {

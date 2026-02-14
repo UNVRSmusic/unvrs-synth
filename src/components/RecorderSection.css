@@ -4,6 +4,34 @@
   align-items: center;
 }
 
+.format-select {
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #ddd;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.format-select:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.format-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.format-select option {
+  background: #1a1a2e;
+  color: white;
+}
+
 .record-btn,
 .download-btn {
   padding: 10px 20px;
