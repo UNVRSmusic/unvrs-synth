@@ -47,6 +47,11 @@
   font-style: italic;
 }
 
+.modes-container {
+  display: flex;
+  gap: 1rem;
+}
+
 .chaos-toggle {
   padding: 8px 20px;
   background: rgba(255, 255, 255, 0.05);

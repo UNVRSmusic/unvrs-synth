@@ -129,6 +129,11 @@ const Synth = ({ audioEngine }: SynthProps) => {
     const newDamageMode = !damageMode;
     setDamageMode(newDamageMode);
     audioEngine.setDamageMode(newDamageMode);
+
+    // When disabling damage mode, clear all active notes in UI
+    if (!newDamageMode) {
+      setActiveNotes(new Set());
+    }
   };
 
   return (
@@ -143,20 +148,24 @@ const Synth = ({ audioEngine }: SynthProps) => {
           </span>
           <span className="octave-hint">(X/Y)</span>
         </div>
-        <button
-          className={`chaos-toggle ${chaosMode ? "active" : ""}`}
-          onClick={handleChaosToggle}
-          title="Enable chaos mode - happy accidents from gain node accumulation"
-        >
-          🌀 Chaos
-        </button>
-        <button
-          className={`damage-toggle ${damageMode ? "active" : ""}`}
-          onClick={handleDamageToggle}
-          title="Enable damage mode - allow duplicate MIDI notes for overdriven sound"
-        >
-          ⚡ Damage
-        </button>
+
+        <div className="modes-container">
+          <button
+            className={`chaos-toggle ${chaosMode ? "active" : ""}`}
+            onClick={handleChaosToggle}
+            title="Enable chaos mode - happy accidents from gain node accumulation"
+          >
+            🌀 Chaos
+          </button>
+          <button
+            className={`damage-toggle ${damageMode ? "active" : ""}`}
+            onClick={handleDamageToggle}
+            title="Enable damage mode - allow duplicate MIDI notes for overdriven sound"
+          >
+            ⚡ Damage
+          </button>
+        </div>
+
         <RecorderSection audioEngine={audioEngine} />
       </div>
 

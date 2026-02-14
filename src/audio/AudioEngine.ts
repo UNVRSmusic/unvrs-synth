@@ -409,6 +409,30 @@ export class AudioEngine {
   // Damage mode - allows duplicate MIDI notes for overdriven accumulation
   setDamageMode(enabled: boolean): void {
     this.damageMode = enabled;
+
+    // When disabling damage mode, stop all playing notes to prevent infinite sustain
+    if (!enabled && this.audioContext) {
+      // Stop all active voices
+      this.activeVoices.forEach((voice) => {
+        voice.noteOff();
+      });
+
+      // Clear active voices map
+      this.activeVoices.clear();
+
+      // Return all voices to pool after release time
+      setTimeout(
+        () => {
+          // Recreate voice pool to ensure clean state
+          const allVoices = [
+            ...this.voicePool,
+            ...Array.from(this.activeVoices.values()),
+          ];
+          this.voicePool = allVoices.slice(0, this.MAX_VOICES);
+        },
+        this.release * 1000 + 100,
+      );
+    }
   }
 
   getDamageMode(): boolean {
