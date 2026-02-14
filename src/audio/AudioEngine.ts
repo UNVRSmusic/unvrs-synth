@@ -9,11 +9,11 @@ export class AudioEngine {
   private readonly MAX_VOICES = 16;
 
   // Synth parameters
-  private waveType: OscillatorType = "sawtooth";
+  private waveType: OscillatorType = "sine";
   private attack = 0.01;
   private decay = 0.1;
   private sustain = 0.7;
-  private release = 0.3;
+  private release = 0.7;
 
   // Filter parameters
   private filter1Type: BiquadFilterType = "lowpass";
@@ -28,13 +28,13 @@ export class AudioEngine {
   private delayNode: DelayNode | null = null;
   private delayFeedback: GainNode | null = null;
   private delayMix: GainNode | null = null;
-  private delayTime = 0.25;
+  private delayTime = 1.5;
   private delayFeedbackAmount = 0.3;
-  private delayMixAmount = 0;
+  private delayMixAmount = 0.55;
 
   private reverbNode: ConvolverNode | null = null;
   private reverbMix: GainNode | null = null;
-  private reverbMixAmount = 0;
+  private reverbMixAmount = 0.6;
 
   private constructor() {}
 
@@ -264,6 +264,55 @@ export class AudioEngine {
 
     const mediaRecorder = new MediaRecorder(destination.stream);
     return mediaRecorder;
+  }
+
+  // Parameter getters
+  getWaveType(): OscillatorType {
+    return this.waveType;
+  }
+
+  getEnvelope(): {
+    attack: number;
+    decay: number;
+    sustain: number;
+    release: number;
+  } {
+    return {
+      attack: this.attack,
+      decay: this.decay,
+      sustain: this.sustain,
+      release: this.release,
+    };
+  }
+
+  getFilter1(): { type: BiquadFilterType; frequency: number; q: number } {
+    return {
+      type: this.filter1Type,
+      frequency: this.filter1Frequency,
+      q: this.filter1Q,
+    };
+  }
+
+  getFilter2(): { type: BiquadFilterType; frequency: number; q: number } {
+    return {
+      type: this.filter2Type,
+      frequency: this.filter2Frequency,
+      q: this.filter2Q,
+    };
+  }
+
+  getDelay(): { time: number; feedback: number; mix: number } {
+    return {
+      time: this.delayTime,
+      feedback: this.delayFeedbackAmount,
+      mix: this.delayMixAmount,
+    };
+  }
+
+  getReverb(): { mix: number } {
+    return {
+      mix: this.reverbMixAmount,
+    };
   }
 
   getAudioContext(): AudioContext | null {

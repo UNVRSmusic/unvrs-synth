@@ -7,10 +7,13 @@ interface EffectsSectionProps {
 }
 
 const EffectsSection = ({ audioEngine }: EffectsSectionProps) => {
-  const [delayTime, setDelayTime] = useState(0.25);
-  const [delayFeedback, setDelayFeedback] = useState(0.3);
-  const [delayMix, setDelayMix] = useState(0);
-  const [reverbMix, setReverbMix] = useState(0);
+  const delayDefaults = audioEngine.getDelay();
+  const reverbDefaults = audioEngine.getReverb();
+
+  const [delayTime, setDelayTime] = useState(delayDefaults.time);
+  const [delayFeedback, setDelayFeedback] = useState(delayDefaults.feedback);
+  const [delayMix, setDelayMix] = useState(delayDefaults.mix);
+  const [reverbMix, setReverbMix] = useState(reverbDefaults.mix);
 
   const handleDelayTimeChange = (value: number) => {
     setDelayTime(value);

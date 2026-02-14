@@ -8,12 +8,14 @@ interface FilterSectionProps {
 }
 
 const FilterSection = ({ audioEngine, filterNumber }: FilterSectionProps) => {
-  const defaultType = filterNumber === 1 ? "lowpass" : "highpass";
-  const defaultFreq = filterNumber === 1 ? 2000 : 100;
+  const filterDefaults =
+    filterNumber === 1 ? audioEngine.getFilter1() : audioEngine.getFilter2();
 
-  const [filterType, setFilterType] = useState<BiquadFilterType>(defaultType);
-  const [frequency, setFrequency] = useState(defaultFreq);
-  const [q, setQ] = useState(1);
+  const [filterType, setFilterType] = useState<BiquadFilterType>(
+    filterDefaults.type,
+  );
+  const [frequency, setFrequency] = useState(filterDefaults.frequency);
+  const [q, setQ] = useState(filterDefaults.q);
 
   const handleTypeChange = (type: BiquadFilterType) => {
     setFilterType(type);

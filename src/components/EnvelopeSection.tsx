@@ -7,10 +7,11 @@ interface EnvelopeSectionProps {
 }
 
 const EnvelopeSection = ({ audioEngine }: EnvelopeSectionProps) => {
-  const [attack, setAttack] = useState(0.01);
-  const [decay, setDecay] = useState(0.1);
-  const [sustain, setSustain] = useState(0.7);
-  const [release, setRelease] = useState(0.3);
+  const envelope = audioEngine.getEnvelope();
+  const [attack, setAttack] = useState(envelope.attack);
+  const [decay, setDecay] = useState(envelope.decay);
+  const [sustain, setSustain] = useState(envelope.sustain);
+  const [release, setRelease] = useState(envelope.release);
 
   const handleAttackChange = (value: number) => {
     setAttack(value);

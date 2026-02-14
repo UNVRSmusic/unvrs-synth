@@ -7,7 +7,9 @@ interface OscillatorSectionProps {
 }
 
 const OscillatorSection = ({ audioEngine }: OscillatorSectionProps) => {
-  const [waveType, setWaveType] = useState<OscillatorType>("sawtooth");
+  const [waveType, setWaveType] = useState<OscillatorType>(
+    audioEngine.getWaveType(),
+  );
 
   const handleWaveTypeChange = (type: OscillatorType) => {
     setWaveType(type);
