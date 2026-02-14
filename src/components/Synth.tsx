@@ -17,6 +17,7 @@ const Synth = ({ audioEngine }: SynthProps) => {
   const [activeNotes, setActiveNotes] = useState<Set<number>>(new Set());
   const [midiDevices, setMidiDevices] = useState<WebMidi.MIDIInput[]>([]);
   const [octaveOffset, setOctaveOffset] = useState(0);
+  const [chaosMode, setChaosMode] = useState(false);
 
   useEffect(() => {
     // Setup MIDI
@@ -87,9 +88,11 @@ const Synth = ({ audioEngine }: SynthProps) => {
     const command = status >> 4;
 
     if (command === 9 && velocity > 0) {
-      // Note on
-      audioEngine.noteOn(note, velocity / 127);
-      setActiveNotes((prev) => new Set(prev).add(note));
+      // Note on - check if already playing to prevent duplicates
+      if (!activeNotes.has(note)) {
+        audioEngine.noteOn(note, velocity / 127);
+        setActiveNotes((prev) => new Set(prev).add(note));
+      }
     } else if (command === 8 || (command === 9 && velocity === 0)) {
       // Note off
       audioEngine.noteOff(note);
@@ -115,6 +118,12 @@ const Synth = ({ audioEngine }: SynthProps) => {
     });
   };
 
+  const handleChaosToggle = () => {
+    const newChaosMode = !chaosMode;
+    setChaosMode(newChaosMode);
+    audioEngine.setChaosMode(newChaosMode);
+  };
+
   return (
     <div className="synth">
       <div className="synth-header">
@@ -127,6 +136,13 @@ const Synth = ({ audioEngine }: SynthProps) => {
           </span>
           <span className="octave-hint">(X/Y)</span>
         </div>
+        <button
+          className={`chaos-toggle ${chaosMode ? "active" : ""}`}
+          onClick={handleChaosToggle}
+          title="Enable chaos mode - happy accidents from gain node accumulation"
+        >
+          🌀 Chaos
+        </button>
         <RecorderSection audioEngine={audioEngine} />
       </div>
 

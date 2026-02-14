@@ -47,6 +47,44 @@
   font-style: italic;
 }
 
+.chaos-toggle {
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 100, 100, 0.3);
+  border-radius: 8px;
+  color: #ff6464;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.chaos-toggle:hover {
+  background: rgba(255, 100, 100, 0.1);
+  border-color: rgba(255, 100, 100, 0.5);
+  transform: translateY(-2px);
+}
+
+.chaos-toggle.active {
+  background: linear-gradient(135deg, #ff6464, #ff4444);
+  border-color: #ff4444;
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 100, 100, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(255, 100, 100, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(255, 100, 100, 0.7);
+  }
+}
+
 .synth-controls {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

@@ -11,9 +11,9 @@ export class AudioEngine {
   // Synth parameters
   private waveType: OscillatorType = "sine";
   private attack = 0.01;
-  private decay = 0.1;
-  private sustain = 0.7;
-  private release = 0.7;
+  private decay = 0.8;
+  private sustain = 0.2;
+  private release = 1.5;
 
   // Filter parameters
   private filter1Type: BiquadFilterType = "lowpass";
@@ -25,16 +25,24 @@ export class AudioEngine {
   private filter2Q = 1;
 
   // Effects
+  // Effect buses - voices connect to these, then routed to effects
+  private dryBus: GainNode | null = null;
+  private delayBus: GainNode | null = null;
+  private reverbBus: GainNode | null = null;
+
   private delayNode: DelayNode | null = null;
   private delayFeedback: GainNode | null = null;
   private delayMix: GainNode | null = null;
-  private delayTime = 1.5;
-  private delayFeedbackAmount = 0.3;
-  private delayMixAmount = 0.55;
+  private delayTime = 1.3;
+  private delayFeedbackAmount = 0.2;
+  private delayMixAmount = 0.45;
 
   private reverbNode: ConvolverNode | null = null;
   private reverbMix: GainNode | null = null;
-  private reverbMixAmount = 0.6;
+  private reverbMixAmount = 0.5;
+
+  // Chaos mode - enables "happy accidents" (gain node accumulation)
+  private chaosMode = false;
 
   private constructor() {}
 
@@ -53,15 +61,32 @@ export class AudioEngine {
     // Setup effects chain
     this.setupEffects();
 
-    // Create voice pool
+    // Create voice pool and connect each voice to the effect buses once
     for (let i = 0; i < this.MAX_VOICES; i++) {
       const voice = new Voice(this.audioContext);
+
+      // Connect voice to all effect buses (connections stay permanent)
+      if (this.dryBus) voice.connect(this.dryBus);
+      if (this.delayBus) voice.connect(this.delayBus);
+      if (this.reverbBus) voice.connect(this.reverbBus);
+
       this.voicePool.push(voice);
     }
   }
 
   private setupEffects(): void {
     if (!this.audioContext || !this.masterGain) return;
+
+    // Create effect buses that voices will connect to
+    this.dryBus = this.audioContext.createGain();
+    this.dryBus.gain.value = 1 - this.delayMixAmount - this.reverbMixAmount;
+    this.dryBus.connect(this.masterGain);
+
+    this.delayBus = this.audioContext.createGain();
+    this.delayBus.gain.value = this.delayMixAmount;
+
+    this.reverbBus = this.audioContext.createGain();
+    this.reverbBus.gain.value = this.reverbMixAmount;
 
     // Delay effect
     this.delayNode = this.audioContext.createDelay(2.0);
@@ -71,26 +96,29 @@ export class AudioEngine {
     this.delayFeedback.gain.value = this.delayFeedbackAmount;
 
     this.delayMix = this.audioContext.createGain();
-    this.delayMix.gain.value = this.delayMixAmount;
+    this.delayMix.gain.value = 1.0; // Full wet signal from delay
 
-    // Delay routing: input -> delay -> feedback -> delay
+    // Delay routing: delayBus -> delay -> feedback -> delay -> mix -> master
+    this.delayBus.connect(this.delayNode);
     this.delayNode.connect(this.delayFeedback);
     this.delayFeedback.connect(this.delayNode);
     this.delayNode.connect(this.delayMix);
+    this.delayMix.connect(this.masterGain);
 
     // Simple reverb (we'll use a basic impulse response)
     this.reverbNode = this.audioContext.createConvolver();
     this.reverbMix = this.audioContext.createGain();
-    this.reverbMix.gain.value = this.reverbMixAmount;
+    this.reverbMix.gain.value = 1.0; // Full wet signal from reverb
 
     // Create a simple impulse response
     this.createSimpleReverb();
 
+    // Reverb routing: reverbBus -> reverb -> mix -> master
+    this.reverbBus.connect(this.reverbNode);
     this.reverbNode.connect(this.reverbMix);
+    this.reverbMix.connect(this.masterGain);
 
     // Final routing
-    this.delayMix.connect(this.masterGain);
-    this.reverbMix.connect(this.masterGain);
     this.masterGain.connect(this.audioContext.destination);
   }
 
@@ -114,6 +142,12 @@ export class AudioEngine {
   noteOn(midiNote: number, velocity: number = 1): void {
     if (!this.audioContext) return;
 
+    // Check if this note is already playing (prevent duplicates)
+    if (this.activeVoices.has(midiNote)) {
+      // Note is already playing, ignore duplicate
+      return;
+    }
+
     // Get a voice from the pool
     let voice = this.voicePool.pop();
 
@@ -127,25 +161,25 @@ export class AudioEngine {
       voice.noteOff();
     }
 
-    // Configure voice
+    // Configure voice with current synth parameters
     voice.setWaveType(this.waveType);
     voice.setEnvelope(this.attack, this.decay, this.sustain, this.release);
     voice.setFilter1(this.filter1Type, this.filter1Frequency, this.filter1Q);
     voice.setFilter2(this.filter2Type, this.filter2Frequency, this.filter2Q);
 
-    // Connect voice to effects
-    const dryGain = this.audioContext.createGain();
-    dryGain.gain.value = 1 - this.delayMixAmount - this.reverbMixAmount;
+    // CHAOS MODE: Create accumulating gain nodes ("happy accidents")
+    if (this.chaosMode && this.audioContext) {
+      const dryGain = this.audioContext.createGain();
+      dryGain.gain.value = 1 - this.delayMixAmount - this.reverbMixAmount;
+      voice.connect(dryGain);
+      dryGain.connect(this.masterGain!);
 
-    voice.connect(dryGain);
-    dryGain.connect(this.masterGain!);
-
-    if (this.delayMixAmount > 0 && this.delayNode) {
-      voice.connect(this.delayNode);
-    }
-
-    if (this.reverbMixAmount > 0 && this.reverbNode) {
-      voice.connect(this.reverbNode);
+      if (this.delayMixAmount > 0 && this.delayNode) {
+        voice.connect(this.delayNode);
+      }
+      if (this.reverbMixAmount > 0 && this.reverbNode) {
+        voice.connect(this.reverbNode);
+      }
     }
 
     // Start the note
@@ -225,20 +259,41 @@ export class AudioEngine {
         0.01,
       );
     }
-    if (this.delayMix) {
-      this.delayMix.gain.setTargetAtTime(
+
+    // Update delay bus gain (how much signal goes to delay)
+    if (this.delayBus) {
+      this.delayBus.gain.setTargetAtTime(
         mix,
         this.audioContext!.currentTime,
         0.01,
       );
     }
+
+    // Update dry bus to compensate
+    this.updateDryBus();
   }
 
   setReverb(mix: number): void {
     this.reverbMixAmount = mix;
-    if (this.reverbMix) {
-      this.reverbMix.gain.setTargetAtTime(
+
+    // Update reverb bus gain (how much signal goes to reverb)
+    if (this.reverbBus) {
+      this.reverbBus.gain.setTargetAtTime(
         mix,
+        this.audioContext!.currentTime,
+        0.01,
+      );
+    }
+
+    // Update dry bus to compensate
+    this.updateDryBus();
+  }
+
+  private updateDryBus(): void {
+    if (this.dryBus) {
+      const dryAmount = 1 - this.delayMixAmount - this.reverbMixAmount;
+      this.dryBus.gain.setTargetAtTime(
+        Math.max(0, dryAmount), // Ensure it doesn't go negative
         this.audioContext!.currentTime,
         0.01,
       );
@@ -313,6 +368,38 @@ export class AudioEngine {
     return {
       mix: this.reverbMixAmount,
     };
+  }
+
+  // Chaos mode - enables "happy accidents" from gain node accumulation
+  setChaosMode(enabled: boolean): void {
+    this.chaosMode = enabled;
+
+    if (!this.audioContext) return;
+
+    // When switching modes, reconnect all voices appropriately
+    const allVoices = [
+      ...this.voicePool,
+      ...Array.from(this.activeVoices.values()),
+    ];
+
+    if (enabled) {
+      // Disconnect from clean buses (chaos mode will create its own connections)
+      allVoices.forEach((voice) => {
+        voice.disconnect();
+      });
+    } else {
+      // Reconnect to clean buses
+      allVoices.forEach((voice) => {
+        voice.disconnect();
+        if (this.dryBus) voice.connect(this.dryBus);
+        if (this.delayBus) voice.connect(this.delayBus);
+        if (this.reverbBus) voice.connect(this.reverbBus);
+      });
+    }
+  }
+
+  getChaosMode(): boolean {
+    return this.chaosMode;
   }
 
   getAudioContext(): AudioContext | null {
