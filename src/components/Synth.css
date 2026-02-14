@@ -15,6 +15,38 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.octave-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.octave-label {
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.octave-value {
+  padding: 5px 15px;
+  background: rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(102, 126, 234, 0.4);
+  border-radius: 6px;
+  color: #667eea;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  min-width: 40px;
+  text-align: center;
+}
+
+.octave-hint {
+  color: #666;
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
 .synth-controls {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

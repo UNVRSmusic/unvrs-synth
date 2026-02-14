@@ -16,6 +16,7 @@ interface SynthProps {
 const Synth = ({ audioEngine }: SynthProps) => {
   const [activeNotes, setActiveNotes] = useState<Set<number>>(new Set());
   const [midiDevices, setMidiDevices] = useState<WebMidi.MIDIInput[]>([]);
+  const [octaveOffset, setOctaveOffset] = useState(0);
 
   useEffect(() => {
     // Setup MIDI
@@ -24,7 +25,18 @@ const Synth = ({ audioEngine }: SynthProps) => {
     // Setup computer keyboard
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return;
-      const midiNote = keyToMidiNote(e.key);
+
+      // Octave controls
+      if (e.key.toLowerCase() === "y") {
+        setOctaveOffset((prev) => Math.max(prev - 1, -3));
+        return;
+      }
+      if (e.key.toLowerCase() === "x") {
+        setOctaveOffset((prev) => Math.min(prev + 1, 3));
+        return;
+      }
+
+      const midiNote = keyToMidiNote(e.key, octaveOffset);
       if (midiNote !== null && !activeNotes.has(midiNote)) {
         audioEngine.noteOn(midiNote, 0.8);
         setActiveNotes((prev) => new Set(prev).add(midiNote));
@@ -32,7 +44,9 @@ const Synth = ({ audioEngine }: SynthProps) => {
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      const midiNote = keyToMidiNote(e.key);
+      if (e.key.toLowerCase() === "x" || e.key.toLowerCase() === "y") return;
+
+      const midiNote = keyToMidiNote(e.key, octaveOffset);
       if (midiNote !== null) {
         audioEngine.noteOff(midiNote);
         setActiveNotes((prev) => {
@@ -50,7 +64,7 @@ const Synth = ({ audioEngine }: SynthProps) => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [audioEngine, activeNotes]);
+  }, [audioEngine, activeNotes, octaveOffset]);
 
   const setupMIDI = async () => {
     if (!navigator.requestMIDIAccess) return;
@@ -105,6 +119,14 @@ const Synth = ({ audioEngine }: SynthProps) => {
     <div className="synth">
       <div className="synth-header">
         <MIDIStatus devices={midiDevices} />
+        <div className="octave-display">
+          <span className="octave-label">Octave:</span>
+          <span className="octave-value">
+            {octaveOffset > 0 ? "+" : ""}
+            {octaveOffset}
+          </span>
+          <span className="octave-hint">(X/Y)</span>
+        </div>
         <RecorderSection audioEngine={audioEngine} />
       </div>
 
@@ -126,7 +148,10 @@ const Synth = ({ audioEngine }: SynthProps) => {
 };
 
 // Keyboard mapping (2 octaves starting at C3)
-const keyToMidiNote = (key: string): number | null => {
+const keyToMidiNote = (
+  key: string,
+  octaveOffset: number = 0,
+): number | null => {
   const mapping: { [key: string]: number } = {
     a: 48,
     w: 49,
@@ -136,7 +161,7 @@ const keyToMidiNote = (key: string): number | null => {
     f: 53,
     t: 54,
     g: 55,
-    y: 56,
+    // y is now used for octave shift
     h: 57,
     u: 58,
     j: 59,
@@ -147,7 +172,8 @@ const keyToMidiNote = (key: string): number | null => {
     ";": 64,
     "'": 65,
   };
-  return mapping[key.toLowerCase()] ?? null;
+  const baseNote = mapping[key.toLowerCase()];
+  return baseNote !== undefined ? baseNote + octaveOffset * 12 : null;
 };
 
 export default Synth;

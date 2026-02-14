@@ -95,7 +95,8 @@ const Keyboard = ({ onNoteOn, onNoteOff, activeNotes }: KeyboardProps) => {
         {renderBlackKeys()}
       </div>
       <div className="keyboard-hint">
-        Use computer keyboard (AWSEDFTGYHUJKOLP;') or click/MIDI to play
+        Use computer keyboard (AWSEDFTGHUJKOLP;') or click/MIDI to play • Y/X to
+        shift octaves
       </div>
     </div>
   );
