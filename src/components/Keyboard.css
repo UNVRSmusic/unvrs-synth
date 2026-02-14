@@ -1,0 +1,81 @@
+.keyboard-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.keyboard {
+  position: relative;
+  height: 180px;
+  display: flex;
+  user-select: none;
+}
+
+.key {
+  cursor: pointer;
+  transition: all 0.05s;
+  border: 1px solid #333;
+}
+
+.key.white {
+  width: 40px;
+  height: 180px;
+  background: linear-gradient(180deg, #fafafa 0%, #e0e0e0 100%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 4px 4px;
+}
+
+.key.white:hover {
+  background: linear-gradient(180deg, #f0f0f0 0%, #d0d0d0 100%);
+}
+
+.key.white.active {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  transform: translateY(2px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.key.black {
+  position: absolute;
+  width: 28px;
+  height: 110px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #000 100%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  border-radius: 0 0 3px 3px;
+}
+
+.key.black:hover {
+  background: linear-gradient(180deg, #3a3a3a 0%, #1a1a1a 100%);
+}
+
+.key.black.active {
+  background: linear-gradient(180deg, #8899ff 0%, #9955cc 100%);
+  transform: translateY(2px);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.keyboard-hint {
+  text-align: center;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .keyboard {
+    overflow-x: auto;
+  }
+
+  .key.white {
+    width: 35px;
+  }
+
+  .key.black {
+    width: 24px;
+  }
+}
