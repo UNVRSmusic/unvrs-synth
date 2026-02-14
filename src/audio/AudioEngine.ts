@@ -1,4 +1,5 @@
 import { Voice } from "./Voice";
+import { MIDIRecorder } from "./MIDIRecorder";
 
 export class AudioEngine {
   private static instance: AudioEngine;
@@ -46,6 +47,9 @@ export class AudioEngine {
 
   // Damage mode - allows duplicate MIDI note-ons for overdriven sound
   private damageMode = false;
+
+  // MIDI recorder - always active, background recording
+  private midiRecorder = new MIDIRecorder();
 
   private constructor() {}
 
@@ -191,6 +195,9 @@ export class AudioEngine {
     voice.noteOn(frequency, velocity);
 
     this.activeVoices.set(midiNote, voice);
+
+    // Log MIDI event
+    this.midiRecorder.logNoteOn(midiNote, velocity);
   }
 
   noteOff(midiNote: number): void {
@@ -198,6 +205,9 @@ export class AudioEngine {
     if (voice) {
       voice.noteOff();
       this.activeVoices.delete(midiNote);
+
+      // Log MIDI event
+      this.midiRecorder.logNoteOff(midiNote);
 
       // Return voice to pool after release time
       setTimeout(
@@ -450,5 +460,18 @@ export class AudioEngine {
 
   getAudioContext(): AudioContext | null {
     return this.audioContext;
+  }
+
+  // MIDI Export functionality
+  exportMIDI(): Blob | null {
+    return this.midiRecorder.exportMIDI();
+  }
+
+  clearMIDI(): void {
+    this.midiRecorder.clear();
+  }
+
+  getMIDIEventCount(): number {
+    return this.midiRecorder.getEventCount();
   }
 }

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AudioEngine } from "../audio/AudioEngine";
 import "./RecorderSection.css";
 
@@ -9,6 +9,7 @@ interface RecorderSectionProps {
 const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
+  const [midiEventCount, setMidiEventCount] = useState(0);
 
   const processorRef = useRef<ScriptProcessorNode | null>(null);
   const audioBuffersRef = useRef<Float32Array[]>([]);
@@ -158,22 +159,72 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
     setRecordedBlob(null);
   };
 
+  // MIDI Export functionality
+  useEffect(() => {
+    // Update MIDI event count periodically
+    const interval = setInterval(() => {
+      setMidiEventCount(audioEngine.getMIDIEventCount());
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [audioEngine]);
+
+  const downloadMIDI = () => {
+    const midiBlob = audioEngine.exportMIDI();
+    if (!midiBlob) return;
+
+    const url = URL.createObjectURL(midiBlob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `synth-midi-${Date.now()}.mid`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    // Optionally clear after download
+    // audioEngine.clearMIDI();
+    // setMidiEventCount(0);
+  };
+
+  const clearMIDI = () => {
+    audioEngine.clearMIDI();
+    setMidiEventCount(0);
+  };
+
   return (
     <div className="recorder-section">
-      {!isRecording ? (
-        <button onClick={startRecording} className="record-btn">
-          ⏺ Record
+      <div className="audio-recorder">
+        {!isRecording ? (
+          <button onClick={startRecording} className="record-btn">
+            ⏺ Record
+          </button>
+        ) : (
+          <button onClick={stopRecording} className="record-btn recording">
+            ⏹ Stop
+          </button>
+        )}
+        {recordedBlob && (
+          <button onClick={downloadRecording} className="download-btn">
+            ⬇ Download
+          </button>
+        )}
+      </div>
+
+      <div className="midi-recorder">
+        <button
+          onClick={downloadMIDI}
+          className="midi-btn"
+          disabled={midiEventCount === 0}
+          title={`${midiEventCount} MIDI events recorded`}
+        >
+          🎹 Download MIDI
+          {/* 🎹 Download MIDI {midiEventCount > 0 && `(${midiEventCount})`} */}
         </button>
-      ) : (
-        <button onClick={stopRecording} className="record-btn recording">
-          ⏹ Stop
-        </button>
-      )}
-      {recordedBlob && (
-        <button onClick={downloadRecording} className="download-btn">
-          ⬇ Download
-        </button>
-      )}
+        {midiEventCount > 0 && (
+          <button onClick={clearMIDI} className="clear-btn">
+            🗑 Clear
+          </button>
+        )}
+      </div>
     </div>
   );
 };

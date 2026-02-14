@@ -1,5 +1,13 @@
 .recorder-section {
   display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.audio-recorder,
+.midi-recorder {
+  display: flex;
   gap: 10px;
   align-items: center;
 }
@@ -71,4 +79,50 @@
   50% {
     opacity: 0.7;
   }
+}
+
+.midi-btn,
+.clear-btn {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #ddd;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.midi-btn:hover:not(:disabled),
+.clear-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.midi-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.midi-btn {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-color: transparent;
+  color: white;
+}
+
+.midi-btn:disabled {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #666;
+}
+
+.clear-btn {
+  background: rgba(220, 53, 69, 0.15);
+  border-color: rgba(220, 53, 69, 0.3);
+  color: #dc3545;
+}
+
+.clear-btn:hover {
+  background: rgba(220, 53, 69, 0.25);
+  border-color: rgba(220, 53, 69, 0.5);
 }
