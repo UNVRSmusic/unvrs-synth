@@ -1,14 +1,16 @@
 .synth {
-  width: 100%;
+  border-left: 30px solid #763e1f;
+  border-right: 30px solid #763e1f;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 }
 
 .synth-header {
   align-items: center;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-wrap: wrap;
@@ -131,13 +133,12 @@
 }
 
 .synth-controls {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  padding: 20px;
 }
 
 @media (max-width: 768px) {
