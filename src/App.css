@@ -7,6 +7,7 @@
 
 h1 {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
