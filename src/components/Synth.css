@@ -1,11 +1,18 @@
 .synth {
-  border-left: 30px solid #763e1f;
-  border-right: 30px solid #763e1f;
+  border-left: 10px solid #763e1f;
+  border-right: 10px solid #763e1f;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
+}
+
+@media (min-width: 1280px) {
+  .synth {
+    border-left-width: 30px;
+    border-right-width: 30px;
+  }
 }
 
 .synth-header {
