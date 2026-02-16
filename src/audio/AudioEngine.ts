@@ -10,6 +10,7 @@ export class AudioEngine {
   private readonly MAX_VOICES = 16;
 
   // Synth parameters
+  private isMonophonic = false;
   private waveType: OscillatorType = "sine";
   private attack = 0.01;
   private decay = 0.8;
@@ -149,6 +150,15 @@ export class AudioEngine {
   noteOn(midiNote: number, velocity: number = 1): void {
     if (!this.audioContext) return;
 
+    // Monophonic mode: stop all active voices before starting a new note
+    // if (this.isMonophonic) {
+    //   this.activeVoices.forEach((voice, note) => {
+    //     voice.noteOff();
+    //     this.midiRecorder.logNoteOff(note);
+    //   });
+    //   this.activeVoices.clear();
+    // }
+
     // Check if this note is already playing (prevent duplicates)
     // Skip this check in damage mode to allow accumulation
     if (!this.damageMode && this.activeVoices.has(midiNote)) {
@@ -226,6 +236,10 @@ export class AudioEngine {
   }
 
   // Parameter setters
+  setIsMonophonic(value: boolean) {
+    this.isMonophonic = value;
+  }
+
   setWaveType(type: OscillatorType): void {
     this.waveType = type;
     // Update all active voices
@@ -341,6 +355,10 @@ export class AudioEngine {
   }
 
   // Parameter getters
+  getIsMonophonic() {
+    return this.isMonophonic;
+  }
+
   getWaveType(): OscillatorType {
     return this.waveType;
   }

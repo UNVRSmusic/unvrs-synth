@@ -70,7 +70,19 @@
   text-align: right;
 }
 
-.wave-selector,
+.osc-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .filter-type-selector {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
@@ -78,8 +90,14 @@
   margin-bottom: 10px;
 }
 
+.wave-btn {
+  min-width: 100px;
+}
+
 .wave-btn,
-.filter-btn {
+.filter-btn,
+.mono-btn,
+.portamento-btn {
   padding: 10px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -98,7 +116,8 @@
 }
 
 .wave-btn.active,
-.filter-btn.active {
+.filter-btn.active,
+.mono-btn.active {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-color: transparent;
   color: white;
