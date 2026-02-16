@@ -19,6 +19,7 @@ h1 {
 }
 
 .init-screen {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,4 +50,54 @@ h1 {
 .hint {
   color: #888;
   font-size: 0.9rem;
+}
+
+.scroll-indicator {
+  animation: bounce 2s infinite;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  border: none;
+  bottom: 10%;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  height: 48px;
+  justify-content: center;
+  left: 50%;
+  opacity: 1;
+  position: fixed;
+  transform: translateX(-50%);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    opacity 0.3s;
+  width: 48px;
+}
+
+.scroll-indicator.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scroll-indicator:hover {
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
 }
