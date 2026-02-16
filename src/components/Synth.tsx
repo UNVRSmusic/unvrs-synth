@@ -169,9 +169,8 @@ const Synth = ({ audioEngine }: SynthProps) => {
         <RecorderSection audioEngine={audioEngine} />
       </div>
 
-      <OscillatorSection audioEngine={audioEngine} />
-
       <div className="synth-controls">
+        <OscillatorSection audioEngine={audioEngine} />
         <EnvelopeSection audioEngine={audioEngine} />
         <FilterSection audioEngine={audioEngine} filterNumber={1} />
         <FilterSection audioEngine={audioEngine} filterNumber={2} />

@@ -11,25 +11,25 @@ const OscillatorSection = ({ audioEngine }: OscillatorSectionProps) => {
     audioEngine.getWaveType(),
   );
 
-  const [isMonophonic, setIsMonophonic] = useState(
-    audioEngine.getIsMonophonic(),
-  );
+  // const [isMonophonic, setIsMonophonic] = useState(
+  //   audioEngine.getIsMonophonic(),
+  // );
 
   const handleWaveTypeChange = (type: OscillatorType) => {
     setWaveType(type);
     audioEngine.setWaveType(type);
   };
 
-  const handleMonophonicChange = (value: boolean) => {
-    setIsMonophonic(value);
-    audioEngine.setIsMonophonic(value);
-  };
+  // const handleMonophonicChange = (value: boolean) => {
+  //   setIsMonophonic(value);
+  //   audioEngine.setIsMonophonic(value);
+  // };
 
   return (
     <div className="control-section">
       <h3>Oscillator</h3>
       <div className="osc-container">
-        <div className="btn-group">
+        <div className="osc-group">
           {(["sine", "square", "sawtooth", "triangle"] as OscillatorType[]).map(
             (type) => (
               <button
