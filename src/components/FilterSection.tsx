@@ -65,25 +65,7 @@ const FilterSection = ({ audioEngine, filterNumber }: FilterSectionProps) => {
   return (
     <div className="control-section">
       <h3>Filter {filterNumber}</h3>
-      <div className="filter-type-selector">
-        {(
-          ["lowpass", "highpass", "bandpass", "notch"] as BiquadFilterType[]
-        ).map((type) => (
-          <button
-            key={type}
-            className={`filter-btn ${filterType === type ? "active" : ""}`}
-            onClick={() => handleTypeChange(type)}
-          >
-            {type === "lowpass"
-              ? "LP"
-              : type === "highpass"
-                ? "HP"
-                : type === "bandpass"
-                  ? "BP"
-                  : "NOTCH"}
-          </button>
-        ))}
-      </div>
+
       <div className="controls-grid">
         <div className="control-group">
           <label>Frequency</label>
@@ -109,6 +91,26 @@ const FilterSection = ({ audioEngine, filterNumber }: FilterSectionProps) => {
           />
           <span className="value">{q.toFixed(1)}</span>
         </div>
+      </div>
+
+      <div className="filter-type-selector">
+        {(
+          ["lowpass", "highpass", "bandpass", "notch"] as BiquadFilterType[]
+        ).map((type) => (
+          <button
+            key={type}
+            className={`filter-btn ${filterType === type ? "active" : ""}`}
+            onClick={() => handleTypeChange(type)}
+          >
+            {type === "lowpass"
+              ? "LP"
+              : type === "highpass"
+                ? "HP"
+                : type === "bandpass"
+                  ? "BP"
+                  : "NOTCH"}
+          </button>
+        ))}
       </div>
     </div>
   );

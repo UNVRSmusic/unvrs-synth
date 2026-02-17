@@ -150,6 +150,11 @@ export class AudioEngine {
   noteOn(midiNote: number, velocity: number = 1): void {
     if (!this.audioContext) return;
 
+    // Resume AudioContext if suspended (required for iOS Safari)
+    if (this.audioContext.state === "suspended") {
+      this.audioContext.resume();
+    }
+
     // Monophonic mode: stop all active voices before starting a new note
     // if (this.isMonophonic) {
     //   this.activeVoices.forEach((voice, note) => {
