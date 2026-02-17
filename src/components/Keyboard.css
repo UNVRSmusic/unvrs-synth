@@ -25,7 +25,7 @@
   -webkit-touch-callout: none; /* Disable iOS callout */
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 10px;
+  padding-bottom: 10px;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 6px;
   /* Smooth scrollbar */
@@ -83,7 +83,7 @@
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
-  touch-action: none;
+  /* touch-action: none; */
   outline: none;
   position: relative;
   display: flex;
