@@ -21,7 +21,7 @@
   gap: 0;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: none; /* Prevent scrolling/zooming on touch */
+  touch-action: pan-x; /* Allow horizontal scrolling on touch */
   -webkit-touch-callout: none; /* Disable iOS callout */
   overflow-x: auto;
   overflow-y: hidden;
