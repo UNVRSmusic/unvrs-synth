@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { AudioEngine } from "../audio/AudioEngine";
 import Keyboard from "./Keyboard";
 import OscillatorSection from "./OscillatorSection";
@@ -105,19 +105,38 @@ const Synth = ({ audioEngine }: SynthProps) => {
     }
   };
 
-  const handleNoteOn = (midiNote: number) => {
-    audioEngine.noteOn(midiNote, 0.8);
-    setActiveNotes((prev) => new Set(prev).add(midiNote));
-  };
+  const handleNoteOn = useCallback(
+    (midiNote: number) => {
+      console.log("handleNoteOn called", { midiNote, damageMode });
+      audioEngine.noteOn(midiNote, 0.8);
+      setActiveNotes((prev) => {
+        const newSet = new Set(prev).add(midiNote);
+        console.log("setActiveNotes after add", {
+          midiNote,
+          size: newSet.size,
+        });
+        return newSet;
+      });
+    },
+    [audioEngine, damageMode],
+  );
 
-  const handleNoteOff = (midiNote: number) => {
-    audioEngine.noteOff(midiNote);
-    setActiveNotes((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(midiNote);
-      return newSet;
-    });
-  };
+  const handleNoteOff = useCallback(
+    (midiNote: number) => {
+      console.log("handleNoteOff called", { midiNote });
+      audioEngine.noteOff(midiNote);
+      setActiveNotes((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(midiNote);
+        console.log("setActiveNotes after delete", {
+          midiNote,
+          size: newSet.size,
+        });
+        return newSet;
+      });
+    },
+    [audioEngine],
+  );
 
   const handleChaosToggle = () => {
     const newChaosMode = !chaosMode;
