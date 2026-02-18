@@ -202,6 +202,19 @@ const Synth = ({ audioEngine }: SynthProps) => {
         onNoteOff={handleNoteOff}
         activeNotes={activeNotes}
       />
+
+      <div className="synth-footer">
+        <p>
+          v1.0.0 • Made with ❤️ by{" "}
+          <a
+            href="https://github.com/UNVRSmusic"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            UNVRS
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

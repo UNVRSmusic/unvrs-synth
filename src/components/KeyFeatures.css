@@ -5,6 +5,19 @@
   padding: 20px 0;
 }
 
+.key-features h1 {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.key-features .version {
+  font-size: 1rem;
+  opacity: 0.7;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
 .feature-item {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);

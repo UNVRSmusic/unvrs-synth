@@ -18,6 +18,13 @@ h1 {
   text-shadow: 0px 0px 20px #667eea;
 }
 
+.version {
+  font-size: 1rem;
+  opacity: 0.7;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
 .init-screen {
   position: relative;
   display: flex;
