@@ -63,3 +63,42 @@
   color: #aaa;
   line-height: 1.5;
 }
+
+/* Donation card styling */
+.donation-card {
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.1) 0%,
+    rgba(118, 75, 162, 0.1) 100%
+  );
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.donation-card:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.15) 0%,
+    rgba(118, 75, 162, 0.15) 100%
+  );
+  border-color: rgba(102, 126, 234, 0.5);
+}
+
+.donate-button {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.donate-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #7788ff 0%, #8855bb 100%);
+}
