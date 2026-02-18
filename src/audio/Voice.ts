@@ -123,6 +123,17 @@ export class Voice {
   }
 
   connect(destination: AudioNode): void {
+    // Safety check: ensure we're connecting nodes from the same audio context
+    if (destination.context !== this.audioContext) {
+      console.error(
+        "Cannot connect: destination belongs to a different AudioContext",
+        {
+          voiceContext: this.audioContext,
+          destinationContext: destination.context,
+        },
+      );
+      return;
+    }
     this.gainNode.connect(destination);
   }
 

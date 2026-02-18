@@ -11,12 +11,15 @@ function App() {
 
   const initializeAudio = async () => {
     const engine = AudioEngine.getInstance();
-    console.log("engine", engine);
     await engine.initialize();
     setAudioEngine(engine);
     setIsInitialized(true);
     window.scrollTo({ top: 0, behavior: "instant" });
   };
+
+  useEffect(() => {
+    console.log("audioEngine", audioEngine);
+  }, [audioEngine]);
 
   const scrollToBottom = () => {
     window.scrollTo({

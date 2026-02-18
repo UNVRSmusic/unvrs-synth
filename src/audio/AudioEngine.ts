@@ -62,6 +62,12 @@ export class AudioEngine {
   }
 
   async initialize(): Promise<void> {
+    // Prevent re-initialization if already initialized
+    if (this.audioContext) {
+      console.warn("AudioEngine already initialized");
+      return;
+    }
+
     this.audioContext = new AudioContext();
     this.masterGain = this.audioContext.createGain();
     this.masterGain.gain.value = 0.3;
