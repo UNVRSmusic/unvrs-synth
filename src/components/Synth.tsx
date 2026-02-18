@@ -49,6 +49,9 @@ const Synth = ({ audioEngine }: SynthProps) => {
       if (e.key.toLowerCase() === "x" || e.key.toLowerCase() === "y") return;
 
       const midiNote = keyToMidiNote(e.key, octaveOffset);
+
+      console.log("midiNote", midiNote);
+
       if (midiNote !== null) {
         audioEngine.noteOff(midiNote);
         setActiveNotes((prev) => {
@@ -229,6 +232,7 @@ const keyToMidiNote = (
     p: 63,
     ";": 64,
     "'": 65,
+    z: 56,
   };
   const baseNote = mapping[key.toLowerCase()];
   return baseNote !== undefined ? baseNote + octaveOffset * 12 : null;

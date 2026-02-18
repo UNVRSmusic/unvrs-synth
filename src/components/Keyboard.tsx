@@ -8,11 +8,11 @@ interface KeyboardProps {
 }
 
 interface KeyData {
-  midiNote: number;
   isBlack: boolean;
+  midiNote: number;
   noteInOctave: number;
-  octave: number;
   noteName: string;
+  octave: number;
 }
 
 const Keyboard = ({ onNoteOn, onNoteOff, activeNotes }: KeyboardProps) => {
@@ -48,11 +48,11 @@ const Keyboard = ({ onNoteOn, onNoteOff, activeNotes }: KeyboardProps) => {
     const noteName = NOTE_NAMES[noteInOctave];
 
     return {
-      midiNote,
       isBlack: isBlackKey(noteInOctave),
+      midiNote,
       noteInOctave,
-      octave,
       noteName,
+      octave,
     };
   };
 
@@ -143,17 +143,17 @@ const Keyboard = ({ onNoteOn, onNoteOff, activeNotes }: KeyboardProps) => {
 
       whiteKeys.push(
         <div
-          key={keyData.midiNote}
-          className={`key white ${isActive ? "active" : ""}`}
-          data-note={keyData.midiNote}
-          onPointerDown={(e) => handlePointerDown(e, keyData.midiNote)}
-          onPointerUp={(e) => handlePointerUp(e, keyData.midiNote)}
-          onPointerEnter={(e) => handlePointerEnter(e, keyData.midiNote)}
-          onPointerLeave={(e) => handlePointerLeave(e, keyData.midiNote)}
-          onContextMenu={(e) => e.preventDefault()}
-          role="button"
           aria-label={`${keyData.noteName}${keyData.octave}`}
           aria-pressed={isActive}
+          className={`key white ${isActive ? "active" : ""}`}
+          data-note={keyData.midiNote}
+          key={keyData.midiNote}
+          onContextMenu={(e) => e.preventDefault()}
+          onPointerDown={(e) => handlePointerDown(e, keyData.midiNote)}
+          onPointerEnter={(e) => handlePointerEnter(e, keyData.midiNote)}
+          onPointerLeave={(e) => handlePointerLeave(e, keyData.midiNote)}
+          onPointerUp={(e) => handlePointerUp(e, keyData.midiNote)}
+          role="button"
           tabIndex={0}
         >
           <span className="key-label">
@@ -180,18 +180,18 @@ const Keyboard = ({ onNoteOn, onNoteOff, activeNotes }: KeyboardProps) => {
 
       blackKeys.push(
         <div
-          key={keyData.midiNote}
-          className={`key black ${isActive ? "active" : ""}`}
-          style={{ "--black-key-position": position } as React.CSSProperties}
-          data-note={keyData.midiNote}
-          onPointerDown={(e) => handlePointerDown(e, keyData.midiNote)}
-          onPointerUp={(e) => handlePointerUp(e, keyData.midiNote)}
-          onPointerEnter={(e) => handlePointerEnter(e, keyData.midiNote)}
-          onPointerLeave={(e) => handlePointerLeave(e, keyData.midiNote)}
-          onContextMenu={(e) => e.preventDefault()}
-          role="button"
           aria-label={`${keyData.noteName}${keyData.octave}`}
           aria-pressed={isActive}
+          className={`key black ${isActive ? "active" : ""}`}
+          data-note={keyData.midiNote}
+          key={keyData.midiNote}
+          onContextMenu={(e) => e.preventDefault()}
+          onPointerDown={(e) => handlePointerDown(e, keyData.midiNote)}
+          onPointerEnter={(e) => handlePointerEnter(e, keyData.midiNote)}
+          onPointerLeave={(e) => handlePointerLeave(e, keyData.midiNote)}
+          onPointerUp={(e) => handlePointerUp(e, keyData.midiNote)}
+          role="button"
+          style={{ "--black-key-position": position } as React.CSSProperties}
           tabIndex={0}
         >
           <span className="key-label">
@@ -213,15 +213,15 @@ const Keyboard = ({ onNoteOn, onNoteOff, activeNotes }: KeyboardProps) => {
   return (
     <div className="keyboard-container">
       <div
+        aria-label="Virtual Piano Keyboard"
         className="keyboard"
         ref={keyboardRef}
         role="group"
-        aria-label="Virtual Piano Keyboard"
       >
         {Array.from({ length: octaves }, (_, i) => renderOctave(i))}
       </div>
       <div className="keyboard-hint">
-        Use computer keyboard (AWSEDFTGHUJKOLP;') or click/touch/MIDI to play •
+        Use computer keyboard (AWSEDFTGZHUJKOLP;') or click/touch/MIDI to play •
         Y/X to shift octaves
       </div>
     </div>

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { AudioEngine } from "../audio/AudioEngine";
 import "./ControlSection.css";
+import { AudioEngine } from "../audio/AudioEngine";
+import { useState } from "react";
 
 interface EffectsSectionProps {
   audioEngine: AudioEngine;
