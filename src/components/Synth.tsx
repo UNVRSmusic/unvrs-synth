@@ -50,8 +50,6 @@ const Synth = ({ audioEngine }: SynthProps) => {
 
       const midiNote = keyToMidiNote(e.key, octaveOffset);
 
-      console.log("midiNote", midiNote);
-
       if (midiNote !== null) {
         audioEngine.noteOff(midiNote);
         setActiveNotes((prev) => {
