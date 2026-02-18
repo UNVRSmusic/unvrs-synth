@@ -1,5 +1,5 @@
-import { useRef, useCallback, useEffect } from "react";
 import "./Keyboard.css";
+import { useRef, useCallback, useEffect } from "react";
 
 interface KeyboardProps {
   onNoteOn: (midiNote: number) => void;

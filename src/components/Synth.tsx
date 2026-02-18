@@ -1,13 +1,13 @@
-import { useState, useEffect, useCallback } from "react";
+import "./Synth.css";
 import { AudioEngine } from "../audio/AudioEngine";
-import Keyboard from "./Keyboard";
-import OscillatorSection from "./OscillatorSection";
+import { useState, useEffect, useCallback } from "react";
+import EffectsSection from "./EffectsSection";
 import EnvelopeSection from "./EnvelopeSection";
 import FilterSection from "./FilterSection";
-import EffectsSection from "./EffectsSection";
-import RecorderSection from "./RecorderSection";
+import Keyboard from "./Keyboard";
 import MIDIStatus from "./MIDIStatus";
-import "./Synth.css";
+import OscillatorSection from "./OscillatorSection";
+import RecorderSection from "./RecorderSection";
 
 interface SynthProps {
   audioEngine: AudioEngine;
