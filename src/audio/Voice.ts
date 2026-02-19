@@ -140,7 +140,10 @@ export class Voice {
     // ADSR envelope for gain
     this.gainNode.gain.cancelScheduledValues(now);
     this.gainNode.gain.setValueAtTime(0.00001, now);
-    this.gainNode.gain.exponentialRampToValueAtTime(velocity, now + this.attack);
+    this.gainNode.gain.exponentialRampToValueAtTime(
+      velocity,
+      now + this.attack,
+    );
     this.gainNode.gain.exponentialRampToValueAtTime(
       Math.max(0.00001, velocity * this.sustain),
       now + this.attack + this.decay,
@@ -168,8 +171,14 @@ export class Voice {
       const envSustain =
         this.filter1BaseFreq + this.filter1EnvAmount * 10000 * this.sustain;
       this.filter1.frequency.cancelScheduledValues(now);
-      this.filter1.frequency.setValueAtTime(Math.max(20, this.filter1BaseFreq), now);
-      this.filter1.frequency.exponentialRampToValueAtTime(Math.max(20, envMax), now + this.attack);
+      this.filter1.frequency.setValueAtTime(
+        Math.max(20, this.filter1BaseFreq),
+        now,
+      );
+      this.filter1.frequency.exponentialRampToValueAtTime(
+        Math.max(20, envMax),
+        now + this.attack,
+      );
       this.filter1.frequency.exponentialRampToValueAtTime(
         Math.max(20, envSustain),
         now + this.attack + this.decay,
@@ -181,8 +190,14 @@ export class Voice {
       const envSustain =
         this.filter2BaseFreq + this.filter2EnvAmount * 10000 * this.sustain;
       this.filter2.frequency.cancelScheduledValues(now);
-      this.filter2.frequency.setValueAtTime(Math.max(20, this.filter2BaseFreq), now);
-      this.filter2.frequency.exponentialRampToValueAtTime(Math.max(20, envMax), now + this.attack);
+      this.filter2.frequency.setValueAtTime(
+        Math.max(20, this.filter2BaseFreq),
+        now,
+      );
+      this.filter2.frequency.exponentialRampToValueAtTime(
+        Math.max(20, envMax),
+        now + this.attack,
+      );
       this.filter2.frequency.exponentialRampToValueAtTime(
         Math.max(20, envSustain),
         now + this.attack + this.decay,
@@ -199,20 +214,35 @@ export class Voice {
 
     // Release envelope for gain
     this.gainNode.gain.cancelScheduledValues(now);
-    this.gainNode.gain.setValueAtTime(Math.max(0.00001, this.gainNode.gain.value), now);
-    this.gainNode.gain.exponentialRampToValueAtTime(0.00001, now + this.release);
+    this.gainNode.gain.setValueAtTime(
+      Math.max(0.00001, this.gainNode.gain.value),
+      now,
+    );
+    this.gainNode.gain.exponentialRampToValueAtTime(
+      0.00001,
+      now + this.release,
+    );
 
     // Release envelope for noise
     if (this.noiseVolume > 0) {
       this.noiseGain.gain.cancelScheduledValues(now);
-      this.noiseGain.gain.setValueAtTime(Math.max(0.00001, this.noiseGain.gain.value), now);
-      this.noiseGain.gain.exponentialRampToValueAtTime(0.00001, now + this.release);
+      this.noiseGain.gain.setValueAtTime(
+        Math.max(0.00001, this.noiseGain.gain.value),
+        now,
+      );
+      this.noiseGain.gain.exponentialRampToValueAtTime(
+        0.00001,
+        now + this.release,
+      );
     }
 
     // Release envelope for filters
     if (this.filter1EnvAmount !== 0) {
       this.filter1.frequency.cancelScheduledValues(now);
-      this.filter1.frequency.setValueAtTime(Math.max(20, this.filter1.frequency.value), now);
+      this.filter1.frequency.setValueAtTime(
+        Math.max(20, this.filter1.frequency.value),
+        now,
+      );
       this.filter1.frequency.exponentialRampToValueAtTime(
         Math.max(20, this.filter1BaseFreq),
         now + this.release,
@@ -221,7 +251,10 @@ export class Voice {
 
     if (this.filter2EnvAmount !== 0) {
       this.filter2.frequency.cancelScheduledValues(now);
-      this.filter2.frequency.setValueAtTime(Math.max(20, this.filter2.frequency.value), now);
+      this.filter2.frequency.setValueAtTime(
+        Math.max(20, this.filter2.frequency.value),
+        now,
+      );
       this.filter2.frequency.exponentialRampToValueAtTime(
         Math.max(20, this.filter2BaseFreq),
         now + this.release,
