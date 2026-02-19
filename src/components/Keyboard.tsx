@@ -16,8 +16,8 @@ interface KeyData {
 }
 
 const Keyboard = ({ onNoteOn, onNoteOff, activeNotes }: KeyboardProps) => {
-  const octaves = 5;
-  const startNote = 36; // C2
+  const octaves = 7;
+  const startNote = 12; // C0
   const activePointersRef = useRef<Map<number, number>>(new Map()); // pointerId -> midiNote
   const keyboardRef = useRef<HTMLDivElement>(null);
 
@@ -128,6 +128,20 @@ const Keyboard = ({ onNoteOn, onNoteOff, activeNotes }: KeyboardProps) => {
       activePointersRef.current.clear();
     };
   }, [onNoteOff]);
+
+  // Scroll to C2 on mount
+  useEffect(() => {
+    if (keyboardRef.current) {
+      // C2 is MIDI note 36, which is 2 octaves from C0 (startNote=12)
+      // Each octave has 7 white keys of 44px width + 1px gap
+      const octavesToScroll = 2;
+      const whiteKeyWidth = 44;
+      const keyGap = 1;
+      const scrollPosition = octavesToScroll * (7 * whiteKeyWidth + 7 * keyGap);
+      
+      keyboardRef.current.scrollLeft = scrollPosition;
+    }
+  }, []);
 
   const renderOctave = (octaveIndex: number) => {
     const whiteKeys: JSX.Element[] = [];
