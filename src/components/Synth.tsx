@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import EffectsSection from "./EffectsSection";
 import EnvelopeSection from "./EnvelopeSection";
 import FilterSection from "./FilterSection";
+import Footer from "./Footer";
 import Keyboard from "./Keyboard";
 import MIDIStatus from "./MIDIStatus";
 import OscillatorSection from "./OscillatorSection";
@@ -255,18 +256,7 @@ const Synth = ({ audioEngine }: SynthProps) => {
         activeNotes={activeNotes}
       />
 
-      <div className="synth-footer">
-        <p>
-          v1.0.0 • Made with ❤️ by{" "}
-          <a
-            href="https://github.com/UNVRSmusic"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            UNVRS
-          </a>
-        </p>
-      </div>
+      <Footer />
     </div>
   );
 };

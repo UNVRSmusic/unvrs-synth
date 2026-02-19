@@ -99,6 +99,12 @@ C3 --------------- C5  (2 oktávy)
 - Firefox ✅
 - Safari ✅ (MIDI podpora omezená)
 
+## License
+
+MIT License - viz [LICENSE](LICENSE) soubor pro detaily.
+
+Projekt je poskytnut "jak je" bez jakýchkoliv záruk. Můžete jej volně používat, modifikovat a distribuovat.
+
 Web Audio a Web MIDI API jsou podporované v moderních prohlížečích. Pro nejlepší zkušenost používej Chrome nebo Edge.
 
 ## Vibecodování

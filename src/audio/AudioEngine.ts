@@ -195,8 +195,18 @@ export class AudioEngine {
     // Configure voice with current synth parameters
     voice.setWaveType(this.waveType);
     voice.setEnvelope(this.attack, this.decay, this.sustain, this.release);
-    voice.setFilter1(this.filter1Type, this.filter1Frequency, this.filter1Q, this.filter1EnvAmount);
-    voice.setFilter2(this.filter2Type, this.filter2Frequency, this.filter2Q, this.filter2EnvAmount);
+    voice.setFilter1(
+      this.filter1Type,
+      this.filter1Frequency,
+      this.filter1Q,
+      this.filter1EnvAmount,
+    );
+    voice.setFilter2(
+      this.filter2Type,
+      this.filter2Frequency,
+      this.filter2Q,
+      this.filter2EnvAmount,
+    );
 
     // CHAOS MODE: Create accumulating gain nodes ("happy accidents")
     if (this.chaosMode && this.audioContext) {
@@ -277,7 +287,12 @@ export class AudioEngine {
     });
   }
 
-  setFilter1(type: BiquadFilterType, frequency: number, q: number, envAmount?: number): void {
+  setFilter1(
+    type: BiquadFilterType,
+    frequency: number,
+    q: number,
+    envAmount?: number,
+  ): void {
     this.filter1Type = type;
     this.filter1Frequency = frequency;
     this.filter1Q = q;
@@ -290,7 +305,12 @@ export class AudioEngine {
     });
   }
 
-  setFilter2(type: BiquadFilterType, frequency: number, q: number, envAmount?: number): void {
+  setFilter2(
+    type: BiquadFilterType,
+    frequency: number,
+    q: number,
+    envAmount?: number,
+  ): void {
     this.filter2Type = type;
     this.filter2Frequency = frequency;
     this.filter2Q = q;
@@ -396,7 +416,12 @@ export class AudioEngine {
     };
   }
 
-  getFilter1(): { type: BiquadFilterType; frequency: number; q: number; envAmount: number } {
+  getFilter1(): {
+    type: BiquadFilterType;
+    frequency: number;
+    q: number;
+    envAmount: number;
+  } {
     return {
       type: this.filter1Type,
       frequency: this.filter1Frequency,
@@ -405,7 +430,12 @@ export class AudioEngine {
     };
   }
 
-  getFilter2(): { type: BiquadFilterType; frequency: number; q: number; envAmount: number } {
+  getFilter2(): {
+    type: BiquadFilterType;
+    frequency: number;
+    q: number;
+    envAmount: number;
+  } {
     return {
       type: this.filter2Type,
       frequency: this.filter2Frequency,
