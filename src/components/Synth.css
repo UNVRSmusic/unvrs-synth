@@ -173,19 +173,26 @@
 }
 
 .fullscreen-toggle {
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  border-radius: 8px;
-  color: #667eea;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
   align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  color: #667eea;
+  cursor: pointer;
+  display: flex;
+  display: none;
+  font-weight: 700;
+  height: 44px;
   justify-content: center;
   min-width: 44px;
-  height: 44px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .fullscreen-toggle {
+    display: block;
+  }
 }
 
 .fullscreen-toggle:hover {
