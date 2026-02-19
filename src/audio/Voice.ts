@@ -140,10 +140,7 @@ export class Voice {
     // ADSR envelope for gain
     this.gainNode.gain.cancelScheduledValues(now);
     this.gainNode.gain.setValueAtTime(0.00001, now);
-    this.gainNode.gain.exponentialRampToValueAtTime(
-      velocity,
-      now + this.attack,
-    );
+    this.gainNode.gain.linearRampToValueAtTime(velocity, now + this.attack);
     this.gainNode.gain.exponentialRampToValueAtTime(
       Math.max(0.00001, velocity * this.sustain),
       now + this.attack + this.decay,
