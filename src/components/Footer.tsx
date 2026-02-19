@@ -6,7 +6,7 @@ const Footer = () => {
       <p>
         v1.0.0 • Made with ❤️ by{" "}
         <a
-          href="https://github.com/UNVRSmusic"
+          href="https://buymeacoffee.com/UNVRS"
           target="_blank"
           rel="noopener noreferrer"
         >
