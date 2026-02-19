@@ -32,6 +32,25 @@ const KeyFeatures = () => {
             stroke="currentColor"
             strokeWidth="2"
           >
+            <path d="M3 20h4V12H3v8zm7 0h4V4h-4v16zm7 0h4v-8h-4v8z" />
+          </svg>
+        </div>
+        <div className="feature-content">
+          <h3>Arpeggiator with Hold Mode</h3>
+          <p>
+            5 pattern modes, adjustable BPM/rate, and note hold functionality
+          </p>
+        </div>
+      </div>
+
+      <div className="feature-item">
+        <div className="feature-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <path d="M12 19v-7m0 0V5m0 7l-3 3m3-3l3 3" />
             <path d="M5 21h14a2 2 0 002-2v-2a2 2 0 00-2-2H5a2 2 0 00-2 2v2a2 2 0 002 2z" />
           </svg>

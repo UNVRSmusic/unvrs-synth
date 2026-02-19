@@ -1,6 +1,7 @@
 import "./Synth.css";
 import { AudioEngine } from "../audio/AudioEngine";
 import { useState, useEffect, useCallback } from "react";
+import ArpeggiatorSection from "./ArpeggiatorSection";
 import EffectsSection from "./EffectsSection";
 import EnvelopeSection from "./EnvelopeSection";
 import FilterSection from "./FilterSection";
@@ -21,10 +22,25 @@ const Synth = ({ audioEngine }: SynthProps) => {
   const [chaosMode, setChaosMode] = useState(false);
   const [damageMode, setDamageMode] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [arpEnabled, setArpEnabled] = useState(false);
 
   useEffect(() => {
     // Setup MIDI
     setupMIDI();
+
+    // Setup arpeggiator visualization callback
+    audioEngine.setArpVisualizationCallback((noteOn, noteOff) => {
+      if (noteOn !== null) {
+        setActiveNotes((prev) => new Set(prev).add(noteOn));
+      }
+      if (noteOff !== null) {
+        setActiveNotes((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(noteOff);
+          return newSet;
+        });
+      }
+    });
 
     // Setup computer keyboard
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -195,6 +211,25 @@ const Synth = ({ audioEngine }: SynthProps) => {
 
         <div className="modes-container">
           <button
+            className={`arp-toggle ${arpEnabled ? "active" : ""}`}
+            onClick={() => {
+              setArpEnabled(!arpEnabled);
+              audioEngine.setArpEnabled(!arpEnabled);
+            }}
+            title="Toggle arpeggiator panel"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M3 20h4V12H3v8zm7 0h4V4h-4v16zm7 0h4v-8h-4v8z" />
+            </svg>
+          </button>
+          <button
             className={`chaos-toggle ${chaosMode ? "active" : ""}`}
             onClick={handleChaosToggle}
             title="Enable chaos mode - happy accidents from gain node accumulation"
@@ -243,6 +278,7 @@ const Synth = ({ audioEngine }: SynthProps) => {
       </div>
 
       <div className="synth-controls">
+        {arpEnabled && <ArpeggiatorSection audioEngine={audioEngine} />}
         <OscillatorSection audioEngine={audioEngine} />
         <EnvelopeSection audioEngine={audioEngine} />
         <FilterSection audioEngine={audioEngine} filterNumber={1} />

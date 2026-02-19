@@ -1,5 +1,6 @@
 import { Voice } from "./Voice";
 import { MIDIRecorder } from "./MIDIRecorder";
+import { Arpeggiator, ArpMode, ArpRate } from "./Arpeggiator";
 
 export class AudioEngine {
   private static instance: AudioEngine;
@@ -12,6 +13,7 @@ export class AudioEngine {
   // Synth parameters
   private isMonophonic = false;
   private waveType: OscillatorType = "sine";
+  private noiseVolume = 0;
   private attack = 0.01;
   private decay = 0.8;
   private sustain = 0.2;
@@ -54,7 +56,33 @@ export class AudioEngine {
   // MIDI recorder - always active, background recording
   private midiRecorder = new MIDIRecorder();
 
-  private constructor() {}
+  // Arpeggiator
+  private arpeggiator = new Arpeggiator();
+
+  // UI visualization callback for arpeggiator notes
+  private arpVisualizationCallback:
+    | ((noteOn: number | null, noteOff: number | null) => void)
+    | null = null;
+
+  private constructor() {
+    // Setup arpeggiator callbacks to call internal note methods
+    this.arpeggiator.setCallbacks(
+      (note, velocity) => {
+        this.internalNoteOn(note, velocity);
+        // Notify UI about note on
+        if (this.arpVisualizationCallback) {
+          this.arpVisualizationCallback(note, null);
+        }
+      },
+      (note) => {
+        this.internalNoteOff(note);
+        // Notify UI about note off
+        if (this.arpVisualizationCallback) {
+          this.arpVisualizationCallback(null, note);
+        }
+      },
+    );
+  }
 
   static getInstance(): AudioEngine {
     if (!AudioEngine.instance) {
@@ -77,9 +105,17 @@ export class AudioEngine {
     // Setup effects chain
     this.setupEffects();
 
+    // Setup shared noise source
+    this.setupNoiseSource();
+
     // Create voice pool and connect each voice to the effect buses once
     for (let i = 0; i < this.MAX_VOICES; i++) {
       const voice = new Voice(this.audioContext);
+
+      // Connect shared noise source to this voice
+      if (this.noiseSource) {
+        voice.setSharedNoiseSource(this.noiseSource);
+      }
 
       // Connect voice to all effect buses (connections stay permanent)
       if (this.dryBus) voice.connect(this.dryBus);
@@ -120,7 +156,7 @@ export class AudioEngine {
     this.delayFeedback.connect(this.delayNode);
     this.delayNode.connect(this.delayMix);
     this.delayMix.connect(this.masterGain); // Direct to output
-    this.delayMix.connect(this.reverbBus);  // Also to reverb
+    this.delayMix.connect(this.reverbBus); // Also to reverb
 
     // Simple reverb (we'll use a basic impulse response)
     this.reverbNode = this.audioContext.createConvolver();
@@ -137,6 +173,31 @@ export class AudioEngine {
 
     // Final routing
     this.masterGain.connect(this.audioContext.destination);
+  }
+
+  private setupNoiseSource(): void {
+    if (!this.audioContext) return;
+
+    // Create noise buffer (shared)
+    const bufferSize = this.audioContext.sampleRate * 2;
+    const noiseBuffer = this.audioContext.createBuffer(
+      1,
+      bufferSize,
+      this.audioContext.sampleRate,
+    );
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+
+    // Create shared noise source (looping)
+    this.noiseSource = this.audioContext.createBufferSource();
+    this.noiseSource.buffer = noiseBuffer;
+    this.noiseSource.loop = true;
+
+    // Start the noise source (always running)
+    // Each voice will connect to this source and control volume via their own gain nodes
+    this.noiseSource.start();
   }
 
   private createSimpleReverb(): void {
@@ -156,7 +217,31 @@ export class AudioEngine {
     this.reverbNode.buffer = impulse;
   }
 
+  // Public note methods - route to arpeggiator or direct playback
   noteOn(midiNote: number, velocity: number = 1): void {
+    const arpState = this.arpeggiator.getState();
+    if (arpState.enabled) {
+      // Route to arpeggiator - it will call internalNoteOn when ready
+      this.arpeggiator.addNote(midiNote);
+    } else {
+      // Direct playback
+      this.internalNoteOn(midiNote, velocity);
+    }
+  }
+
+  noteOff(midiNote: number): void {
+    const arpState = this.arpeggiator.getState();
+    if (arpState.enabled) {
+      // Remove from arpeggiator
+      this.arpeggiator.removeNote(midiNote);
+    } else {
+      // Direct playback
+      this.internalNoteOff(midiNote);
+    }
+  }
+
+  // Internal note methods - actual audio playback
+  private internalNoteOn(midiNote: number, velocity: number = 1): void {
     if (!this.audioContext) return;
 
     // Resume AudioContext if suspended (required for iOS Safari)
@@ -195,6 +280,7 @@ export class AudioEngine {
 
     // Configure voice with current synth parameters
     voice.setWaveType(this.waveType);
+    voice.setNoiseVolume(this.noiseVolume);
     voice.setEnvelope(this.attack, this.decay, this.sustain, this.release);
     voice.setFilter1(
       this.filter1Type,
@@ -234,7 +320,7 @@ export class AudioEngine {
     this.midiRecorder.logNoteOn(midiNote, velocity);
   }
 
-  noteOff(midiNote: number): void {
+  private internalNoteOff(midiNote: number): void {
     const voice = this.activeVoices.get(midiNote);
     if (voice) {
       voice.noteOff();
@@ -270,6 +356,23 @@ export class AudioEngine {
     this.activeVoices.forEach((voice) => {
       voice.setWaveType(type);
     });
+  }
+
+  setNoiseVolume(volume: number): void {
+    this.noiseVolume = volume;
+
+    // Update all voices (active and in pool)
+    const allVoices = [
+      ...this.voicePool,
+      ...Array.from(this.activeVoices.values()),
+    ];
+    allVoices.forEach((voice) => {
+      voice.setNoiseVolume(volume);
+    });
+  }
+
+  getNoiseVolume(): number {
+    return this.noiseVolume;
   }
 
   setEnvelope(
@@ -543,5 +646,36 @@ export class AudioEngine {
 
   getMIDIEventCount(): number {
     return this.midiRecorder.getEventCount();
+  }
+
+  // Arpeggiator controls
+  setArpEnabled(enabled: boolean): void {
+    this.arpeggiator.setEnabled(enabled);
+  }
+
+  setArpMode(mode: ArpMode): void {
+    this.arpeggiator.setMode(mode);
+  }
+
+  setArpBPM(bpm: number): void {
+    this.arpeggiator.setBPM(bpm);
+  }
+
+  setArpRate(rate: ArpRate): void {
+    this.arpeggiator.setRate(rate);
+  }
+
+  setArpHold(hold: boolean): void {
+    this.arpeggiator.setHold(hold);
+  }
+
+  setArpVisualizationCallback(
+    callback: (noteOn: number | null, noteOff: number | null) => void,
+  ): void {
+    this.arpVisualizationCallback = callback;
+  }
+
+  getArpState() {
+    return this.arpeggiator.getState();
   }
 }

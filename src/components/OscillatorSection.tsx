@@ -10,6 +10,7 @@ const OscillatorSection = ({ audioEngine }: OscillatorSectionProps) => {
   const [waveType, setWaveType] = useState<OscillatorType>(
     audioEngine.getWaveType(),
   );
+  const [noiseVolume, setNoiseVolume] = useState(audioEngine.getNoiseVolume());
 
   // const [isMonophonic, setIsMonophonic] = useState(
   //   audioEngine.getIsMonophonic(),
@@ -18,6 +19,12 @@ const OscillatorSection = ({ audioEngine }: OscillatorSectionProps) => {
   const handleWaveTypeChange = (type: OscillatorType) => {
     setWaveType(type);
     audioEngine.setWaveType(type);
+  };
+
+  const handleNoiseVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+    setNoiseVolume(value);
+    audioEngine.setNoiseVolume(value);
   };
 
   // const handleMonophonicChange = (value: boolean) => {
@@ -41,6 +48,18 @@ const OscillatorSection = ({ audioEngine }: OscillatorSectionProps) => {
               </button>
             ),
           )}
+        </div>
+
+        <div className="control-group">
+          <label>Noise: {noiseVolume.toFixed(2)}</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={noiseVolume}
+            onChange={handleNoiseVolumeChange}
+          />
         </div>
 
         {/* <div className="btn-group">
