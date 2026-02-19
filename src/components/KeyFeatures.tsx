@@ -81,6 +81,23 @@ const KeyFeatures = () => {
         </div>
       </div>
 
+      <div className="feature-item">
+        <div className="feature-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" />
+          </svg>
+        </div>
+        <div className="feature-content">
+          <h3>Fullscreen Mode</h3>
+          <p>Immersive performance experience with fullscreen toggle support</p>
+        </div>
+      </div>
+
       <div className="feature-item donation-card">
         <div className="feature-icon">
           <svg
