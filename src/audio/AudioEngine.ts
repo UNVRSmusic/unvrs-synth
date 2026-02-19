@@ -21,10 +21,12 @@ export class AudioEngine {
   private filter1Type: BiquadFilterType = "lowpass";
   private filter1Frequency = 2000;
   private filter1Q = 1;
+  private filter1EnvAmount = 0;
 
   private filter2Type: BiquadFilterType = "highpass";
   private filter2Frequency = 100;
   private filter2Q = 1;
+  private filter2EnvAmount = 0;
 
   // Effects
   // Effect buses - voices connect to these, then routed to effects
@@ -193,8 +195,8 @@ export class AudioEngine {
     // Configure voice with current synth parameters
     voice.setWaveType(this.waveType);
     voice.setEnvelope(this.attack, this.decay, this.sustain, this.release);
-    voice.setFilter1(this.filter1Type, this.filter1Frequency, this.filter1Q);
-    voice.setFilter2(this.filter2Type, this.filter2Frequency, this.filter2Q);
+    voice.setFilter1(this.filter1Type, this.filter1Frequency, this.filter1Q, this.filter1EnvAmount);
+    voice.setFilter2(this.filter2Type, this.filter2Frequency, this.filter2Q, this.filter2EnvAmount);
 
     // CHAOS MODE: Create accumulating gain nodes ("happy accidents")
     if (this.chaosMode && this.audioContext) {
@@ -275,23 +277,29 @@ export class AudioEngine {
     });
   }
 
-  setFilter1(type: BiquadFilterType, frequency: number, q: number): void {
+  setFilter1(type: BiquadFilterType, frequency: number, q: number, envAmount?: number): void {
     this.filter1Type = type;
     this.filter1Frequency = frequency;
     this.filter1Q = q;
+    if (envAmount !== undefined) {
+      this.filter1EnvAmount = envAmount;
+    }
     // Update all active voices
     this.activeVoices.forEach((voice) => {
-      voice.setFilter1(type, frequency, q);
+      voice.setFilter1(type, frequency, q, this.filter1EnvAmount);
     });
   }
 
-  setFilter2(type: BiquadFilterType, frequency: number, q: number): void {
+  setFilter2(type: BiquadFilterType, frequency: number, q: number, envAmount?: number): void {
     this.filter2Type = type;
     this.filter2Frequency = frequency;
     this.filter2Q = q;
+    if (envAmount !== undefined) {
+      this.filter2EnvAmount = envAmount;
+    }
     // Update all active voices
     this.activeVoices.forEach((voice) => {
-      voice.setFilter2(type, frequency, q);
+      voice.setFilter2(type, frequency, q, this.filter2EnvAmount);
     });
   }
 
@@ -388,19 +396,21 @@ export class AudioEngine {
     };
   }
 
-  getFilter1(): { type: BiquadFilterType; frequency: number; q: number } {
+  getFilter1(): { type: BiquadFilterType; frequency: number; q: number; envAmount: number } {
     return {
       type: this.filter1Type,
       frequency: this.filter1Frequency,
       q: this.filter1Q,
+      envAmount: this.filter1EnvAmount,
     };
   }
 
-  getFilter2(): { type: BiquadFilterType; frequency: number; q: number } {
+  getFilter2(): { type: BiquadFilterType; frequency: number; q: number; envAmount: number } {
     return {
       type: this.filter2Type,
       frequency: this.filter2Frequency,
       q: this.filter2Q,
+      envAmount: this.filter2EnvAmount,
     };
   }
 

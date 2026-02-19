@@ -11,6 +11,12 @@ export class Voice {
   private sustain = 0.7;
   private release = 0.3;
 
+  // Filter envelope amounts
+  private filter1EnvAmount = 0;
+  private filter2EnvAmount = 0;
+  private filter1BaseFreq = 2000;
+  private filter2BaseFreq = 100;
+
   constructor(audioContext: AudioContext) {
     this.audioContext = audioContext;
 
@@ -58,8 +64,10 @@ export class Voice {
     this.release = release;
   }
 
-  setFilter1(type: BiquadFilterType, frequency: number, q: number): void {
+  setFilter1(type: BiquadFilterType, frequency: number, q: number, envAmount: number = 0): void {
     this.filter1.type = type;
+    this.filter1BaseFreq = frequency;
+    this.filter1EnvAmount = envAmount;
     this.filter1.frequency.setTargetAtTime(
       frequency,
       this.audioContext.currentTime,
@@ -68,8 +76,10 @@ export class Voice {
     this.filter1.Q.setTargetAtTime(q, this.audioContext.currentTime, 0.01);
   }
 
-  setFilter2(type: BiquadFilterType, frequency: number, q: number): void {
+  setFilter2(type: BiquadFilterType, frequency: number, q: number, envAmount: number = 0): void {
     this.filter2.type = type;
+    this.filter2BaseFreq = frequency;
+    this.filter2EnvAmount = envAmount;
     this.filter2.frequency.setTargetAtTime(
       frequency,
       this.audioContext.currentTime,
@@ -97,7 +107,7 @@ export class Voice {
     this.oscillator.frequency.value = frequency;
     this.oscillator.connect(this.filter1);
 
-    // ADSR envelope
+    // ADSR envelope for gain
     this.gainNode.gain.cancelScheduledValues(now);
     this.gainNode.gain.setValueAtTime(0, now);
     this.gainNode.gain.linearRampToValueAtTime(velocity, now + this.attack);
@@ -105,6 +115,25 @@ export class Voice {
       velocity * this.sustain,
       now + this.attack + this.decay,
     );
+
+    // ADSR envelope for filter cutoff modulation
+    if (this.filter1EnvAmount !== 0) {
+      const envMax = this.filter1BaseFreq + (this.filter1EnvAmount * 10000);
+      const envSustain = this.filter1BaseFreq + (this.filter1EnvAmount * 10000 * this.sustain);
+      this.filter1.frequency.cancelScheduledValues(now);
+      this.filter1.frequency.setValueAtTime(this.filter1BaseFreq, now);
+      this.filter1.frequency.linearRampToValueAtTime(envMax, now + this.attack);
+      this.filter1.frequency.linearRampToValueAtTime(envSustain, now + this.attack + this.decay);
+    }
+
+    if (this.filter2EnvAmount !== 0) {
+      const envMax = this.filter2BaseFreq + (this.filter2EnvAmount * 10000);
+      const envSustain = this.filter2BaseFreq + (this.filter2EnvAmount * 10000 * this.sustain);
+      this.filter2.frequency.cancelScheduledValues(now);
+      this.filter2.frequency.setValueAtTime(this.filter2BaseFreq, now);
+      this.filter2.frequency.linearRampToValueAtTime(envMax, now + this.attack);
+      this.filter2.frequency.linearRampToValueAtTime(envSustain, now + this.attack + this.decay);
+    }
 
     this.oscillator.start(now);
   }
@@ -114,9 +143,23 @@ export class Voice {
 
     const now = this.audioContext.currentTime;
 
+    // Release envelope for gain
     this.gainNode.gain.cancelScheduledValues(now);
     this.gainNode.gain.setValueAtTime(this.gainNode.gain.value, now);
     this.gainNode.gain.linearRampToValueAtTime(0, now + this.release);
+
+    // Release envelope for filters
+    if (this.filter1EnvAmount !== 0) {
+      this.filter1.frequency.cancelScheduledValues(now);
+      this.filter1.frequency.setValueAtTime(this.filter1.frequency.value, now);
+      this.filter1.frequency.linearRampToValueAtTime(this.filter1BaseFreq, now + this.release);
+    }
+
+    if (this.filter2EnvAmount !== 0) {
+      this.filter2.frequency.cancelScheduledValues(now);
+      this.filter2.frequency.setValueAtTime(this.filter2.frequency.value, now);
+      this.filter2.frequency.linearRampToValueAtTime(this.filter2BaseFreq, now + this.release);
+    }
 
     this.oscillator.stop(now + this.release);
     this.oscillator = null;

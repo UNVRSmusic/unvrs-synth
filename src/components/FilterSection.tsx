@@ -33,13 +33,14 @@ const FilterSection = ({ audioEngine, filterNumber }: FilterSectionProps) => {
   );
   const [frequency, setFrequency] = useState(filterDefaults.frequency);
   const [q, setQ] = useState(filterDefaults.q);
+  const [envAmount, setEnvAmount] = useState(filterDefaults.envAmount);
 
   const handleTypeChange = (type: BiquadFilterType) => {
     setFilterType(type);
     if (filterNumber === 1) {
-      audioEngine.setFilter1(type, frequency, q);
+      audioEngine.setFilter1(type, frequency, q, envAmount);
     } else {
-      audioEngine.setFilter2(type, frequency, q);
+      audioEngine.setFilter2(type, frequency, q, envAmount);
     }
   };
 
@@ -47,18 +48,27 @@ const FilterSection = ({ audioEngine, filterNumber }: FilterSectionProps) => {
     const freq = sliderToFreq(sliderValue);
     setFrequency(freq);
     if (filterNumber === 1) {
-      audioEngine.setFilter1(filterType, freq, q);
+      audioEngine.setFilter1(filterType, freq, q, envAmount);
     } else {
-      audioEngine.setFilter2(filterType, freq, q);
+      audioEngine.setFilter2(filterType, freq, q, envAmount);
     }
   };
 
   const handleQChange = (value: number) => {
     setQ(value);
     if (filterNumber === 1) {
-      audioEngine.setFilter1(filterType, frequency, value);
+      audioEngine.setFilter1(filterType, frequency, value, envAmount);
     } else {
-      audioEngine.setFilter2(filterType, frequency, value);
+      audioEngine.setFilter2(filterType, frequency, value, envAmount);
+    }
+  };
+
+  const handleEnvAmountChange = (value: number) => {
+    setEnvAmount(value);
+    if (filterNumber === 1) {
+      audioEngine.setFilter1(filterType, frequency, q, value);
+    } else {
+      audioEngine.setFilter2(filterType, frequency, q, value);
     }
   };
 
@@ -90,6 +100,18 @@ const FilterSection = ({ audioEngine, filterNumber }: FilterSectionProps) => {
             onChange={(e) => handleQChange(parseFloat(e.target.value))}
           />
           <span className="value">{q.toFixed(1)}</span>
+        </div>
+        <div className="control-group">
+          <label>Env Amount</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={envAmount}
+            onChange={(e) => handleEnvAmountChange(parseFloat(e.target.value))}
+          />
+          <span className="value">{envAmount.toFixed(2)}</span>
         </div>
       </div>
 
