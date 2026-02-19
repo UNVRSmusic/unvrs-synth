@@ -6,8 +6,9 @@
 }
 
 .key-features h1 {
-  grid-column: 1 / -1;
-  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
   margin-bottom: 10px;
 }
 

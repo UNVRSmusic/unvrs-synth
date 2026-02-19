@@ -200,8 +200,11 @@ const Synth = ({ audioEngine }: SynthProps) => {
 
   return (
     <div className="synth">
+      <div className="logo-container">
+        <Logo className="synth-logo" width={240} />
+      </div>
+
       <div className="synth-header">
-        <Logo width={180} height={50} className="synth-logo" />
         <MIDIStatus devices={midiDevices} />
         <div className="octave-display">
           <span className="octave-label">Octave:</span>

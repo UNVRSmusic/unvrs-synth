@@ -5,7 +5,7 @@ const KeyFeatures = () => {
   return (
     <div className="key-features">
       <h1>
-        <Logo className="synth-logo" />
+        <Logo className="synth-logo" width={300} />
       </h1>
 
       <div className="feature-item">
