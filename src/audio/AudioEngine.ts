@@ -114,12 +114,13 @@ export class AudioEngine {
     this.delayMix = this.audioContext.createGain();
     this.delayMix.gain.value = 1.0; // Full wet signal from delay
 
-    // Delay routing: delayBus -> delay -> feedback -> delay -> mix -> reverb
+    // Delay routing: delayBus -> delay -> feedback -> delay -> mix -> (master + reverb)
     this.delayBus.connect(this.delayNode);
     this.delayNode.connect(this.delayFeedback);
     this.delayFeedback.connect(this.delayNode);
     this.delayNode.connect(this.delayMix);
-    this.delayMix.connect(this.reverbBus);
+    this.delayMix.connect(this.masterGain); // Direct to output
+    this.delayMix.connect(this.reverbBus);  // Also to reverb
 
     // Simple reverb (we'll use a basic impulse response)
     this.reverbNode = this.audioContext.createConvolver();
