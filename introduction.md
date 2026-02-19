@@ -32,7 +32,8 @@ Vyzkoušej tady:
 🌐 https://unvrsmusic.github.io/unvrs-synth/
 
 Budu rád za feedback, klidně sdílej 🙌
-Tohle je teprve začátek.
+
+A pokud se ti bude fakt líbit, můžeš mi koupit ☕ 😉
 
 #synth #websynth #sounddesign #electronicmusic #musictools #javascript #unvrs #producerlife
 
@@ -59,6 +60,7 @@ Try it here:
 🌐 https://unvrsmusic.github.io/unvrs-synth/
 
 I’d love your feedback — feel free to share 🙌
-This is just the beginning.
+
+And if you really like it, you can buy me a ☕
 
 #synth #websynth #sounddesign #electronicmusic #musictools #javascript #unvrs #producerlife
