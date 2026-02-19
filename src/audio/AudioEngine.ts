@@ -11,6 +11,7 @@ export class AudioEngine {
   private readonly MAX_VOICES = 16;
 
   // Synth parameters
+
   private isMonophonic = false;
   private waveType: OscillatorType = "sine";
   private noiseVolume = 0;
@@ -58,6 +59,9 @@ export class AudioEngine {
 
   // Arpeggiator
   private arpeggiator = new Arpeggiator();
+
+  // Shared noise source to prevent phasing
+  private noiseSource: AudioBufferSourceNode | null = null;
 
   // UI visualization callback for arpeggiator notes
   private arpVisualizationCallback:

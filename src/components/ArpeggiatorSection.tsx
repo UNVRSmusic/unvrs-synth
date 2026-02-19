@@ -9,16 +9,11 @@ interface ArpeggiatorSectionProps {
 
 const ArpeggiatorSection = ({ audioEngine }: ArpeggiatorSectionProps) => {
   const arpState = audioEngine.getArpState();
-  const [enabled, setEnabled] = useState(arpState.enabled);
+  const [enabled] = useState(arpState.enabled);
   const [mode, setMode] = useState<ArpMode>(arpState.mode);
   const [bpm, setBpm] = useState(arpState.bpm);
   const [rate, setRate] = useState<ArpRate>(arpState.rate);
   const [hold, setHold] = useState(arpState.hold);
-
-  const handleEnabledChange = (value: boolean) => {
-    setEnabled(value);
-    audioEngine.setArpEnabled(value);
-  };
 
   const handleModeChange = (newMode: ArpMode) => {
     setMode(newMode);
