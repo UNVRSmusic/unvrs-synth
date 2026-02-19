@@ -42,11 +42,11 @@ export class AudioEngine {
   private delayMix: GainNode | null = null;
   private delayTime = 1.3;
   private delayFeedbackAmount = 0.2;
-  private delayMixAmount = 0.3;
+  private delayMixAmount = 0.15;
 
   private reverbNode: ConvolverNode | null = null;
   private reverbMix: GainNode | null = null;
-  private reverbMixAmount = 0.5;
+  private reverbMixAmount = 0.4;
 
   // Chaos mode - enables "happy accidents" (gain node accumulation)
   private chaosMode = false;
