@@ -1,9 +1,12 @@
 import "./KeyFeatures.css";
+import { Logo } from "./Logo";
 
 const KeyFeatures = () => {
   return (
     <div className="key-features">
-      <h1>UNVRS Synth</h1>
+      <h1>
+        <Logo className="synth-logo" />
+      </h1>
 
       <div className="feature-item">
         <div className="feature-icon">

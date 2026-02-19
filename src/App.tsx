@@ -72,10 +72,7 @@ function App() {
           </button>
         </div>
       ) : (
-        <>
-          <h1>UNVRS Synth</h1>
-          <Synth audioEngine={audioEngine!} />
-        </>
+        <Synth audioEngine={audioEngine!} />
       )}
     </div>
   );

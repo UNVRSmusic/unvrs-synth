@@ -1,5 +1,7 @@
+import "./Logo.css";
 import "./Synth.css";
 import { AudioEngine } from "../audio/AudioEngine";
+import { Logo } from "./Logo";
 import { useState, useEffect, useCallback } from "react";
 import ArpeggiatorSection from "./ArpeggiatorSection";
 import EffectsSection from "./EffectsSection";
@@ -199,6 +201,7 @@ const Synth = ({ audioEngine }: SynthProps) => {
   return (
     <div className="synth">
       <div className="synth-header">
+        <Logo width={180} height={50} className="synth-logo" />
         <MIDIStatus devices={midiDevices} />
         <div className="octave-display">
           <span className="octave-label">Octave:</span>
