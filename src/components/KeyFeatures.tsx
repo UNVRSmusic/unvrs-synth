@@ -113,7 +113,7 @@ const KeyFeatures = () => {
           <h3>Support This Project</h3>
           <p>If you enjoy UNVRS Synth, consider supporting the development!</p>
           <a
-            href="https://buymeacoffee.com/yourname"
+            href="https://buymeacoffee.com/UNVRS"
             target="_blank"
             rel="noopener noreferrer"
             className="donate-button"
