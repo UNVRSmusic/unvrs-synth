@@ -1,0 +1,6 @@
+# robots.txt for UNVRS Synth
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://unvrsmusic.github.io/unvrs-synth/sitemap.xml
