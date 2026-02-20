@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
-import { AudioEngine } from "../audio/AudioEngine";
 import "./RecorderSection.css";
+import { AudioEngine } from "../audio/AudioEngine";
+import { useState, useRef, useEffect } from "react";
 
 interface RecorderSectionProps {
   audioEngine: AudioEngine;
@@ -71,6 +71,8 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
   };
 
   const startRecording = async () => {
+    gtag("event", "start_recording");
+
     const audioContext = audioEngine.getAudioContext();
     if (!audioContext) return;
 
@@ -101,6 +103,8 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
   };
 
   const stopRecording = () => {
+    gtag("event", "stop_recording");
+
     const audioContext = audioEngine.getAudioContext();
     const masterGain = audioEngine.getMasterGain();
     const processor = processorRef.current;
@@ -148,6 +152,8 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
   };
 
   const downloadRecording = () => {
+    gtag("event", "download_recording");
+
     if (!recordedBlob) return;
 
     const url = URL.createObjectURL(recordedBlob);
@@ -170,6 +176,8 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
   }, [audioEngine]);
 
   const downloadMIDI = () => {
+    gtag("event", "download_midi");
+
     const midiBlob = audioEngine.exportMIDI();
     if (!midiBlob) return;
 
@@ -186,6 +194,8 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
   };
 
   const clearMIDI = () => {
+    gtag("event", "clear_midi");
+
     audioEngine.clearMIDI();
     setMidiEventCount(0);
   };

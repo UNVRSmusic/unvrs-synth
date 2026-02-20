@@ -159,16 +159,24 @@ const Synth = ({ audioEngine }: SynthProps) => {
     [audioEngine],
   );
 
+  const handleArpToggle = () => {
+    setArpEnabled(!arpEnabled);
+    audioEngine.setArpEnabled(!arpEnabled);
+    gtag("event", "handle_arp_toggle");
+  };
+
   const handleChaosToggle = () => {
     const newChaosMode = !chaosMode;
     setChaosMode(newChaosMode);
     audioEngine.setChaosMode(newChaosMode);
+    gtag("event", "handle_chaos_toggle");
   };
 
   const handleDamageToggle = () => {
     const newDamageMode = !damageMode;
     setDamageMode(newDamageMode);
     audioEngine.setDamageMode(newDamageMode);
+    gtag("event", "handle_damage_toggle");
 
     // When disabling damage mode, clear all active notes in UI
     if (!newDamageMode) {
@@ -181,6 +189,8 @@ const Synth = ({ audioEngine }: SynthProps) => {
       document.documentElement.requestFullscreen().catch((err) => {
         console.error("Error attempting to enable fullscreen:", err);
       });
+
+      gtag("event", "handle_fullscreen_toggle");
     } else {
       document.exitFullscreen();
     }
@@ -218,10 +228,7 @@ const Synth = ({ audioEngine }: SynthProps) => {
         <div className="modes-container">
           <button
             className={`arp-toggle ${arpEnabled ? "active" : ""}`}
-            onClick={() => {
-              setArpEnabled(!arpEnabled);
-              audioEngine.setArpEnabled(!arpEnabled);
-            }}
+            onClick={handleArpToggle}
             title="Toggle arpeggiator panel"
           >
             <svg
