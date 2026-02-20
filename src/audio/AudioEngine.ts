@@ -27,7 +27,7 @@ export class AudioEngine {
   private filter1EnvAmount = 0;
 
   private filter2Type: BiquadFilterType = "highpass";
-  private filter2Frequency = 100;
+  private filter2Frequency = 40;
   private filter2Q = 1;
   private filter2EnvAmount = 0;
 
@@ -42,7 +42,7 @@ export class AudioEngine {
   private delayMix: GainNode | null = null;
   private delayTime = 1.3;
   private delayFeedbackAmount = 0.2;
-  private delayMixAmount = 0.15;
+  private delayMixAmount = 0.1;
 
   private reverbNode: ConvolverNode | null = null;
   private reverbMix: GainNode | null = null;

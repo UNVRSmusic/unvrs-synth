@@ -138,7 +138,7 @@ const Keyboard = ({ onNoteOn, onNoteOff, activeNotes }: KeyboardProps) => {
       const whiteKeyWidth = 44;
       const keyGap = 1;
       const scrollPosition = octavesToScroll * (7 * whiteKeyWidth + 7 * keyGap);
-      
+
       keyboardRef.current.scrollLeft = scrollPosition;
     }
   }, []);
