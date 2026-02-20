@@ -7,8 +7,9 @@ const Footer = () => {
         v1.0.0 • Made with ❤️ by{" "}
         <a
           href="https://buymeacoffee.com/UNVRS"
-          target="_blank"
+          onClick={() => gtag("event", "buy_me_a_coffee_click")}
           rel="noopener noreferrer"
+          target="_blank"
         >
           UNVRS
         </a>
@@ -16,8 +17,8 @@ const Footer = () => {
         Open source under{" "}
         <a
           href="https://github.com/UNVRSmusic/unvrs-synth/blob/main/LICENSE"
-          target="_blank"
           rel="noopener noreferrer"
+          target="_blank"
         >
           MIT License
         </a>
