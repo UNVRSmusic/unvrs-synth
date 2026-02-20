@@ -134,11 +134,13 @@ const KeyFeatures = () => {
         <div className="feature-content">
           <h3>Support This Project</h3>
           <p>If you enjoy UNVRS Synth, consider supporting the development!</p>
+
           <a
-            href="https://buymeacoffee.com/UNVRS"
-            target="_blank"
-            rel="noopener noreferrer"
             className="donate-button"
+            onClick={() => gtag("event", "buy_me_a_coffee_click")}
+            href="https://buymeacoffee.com/UNVRS"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             ☕ Buy Me a Coffee
           </a>
