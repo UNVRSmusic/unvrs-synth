@@ -92,7 +92,6 @@
 .arp-toggle:hover {
   background: rgba(102, 126, 234, 0.1);
   border-color: rgba(102, 126, 234, 0.5);
-  transform: translateY(-2px);
 }
 
 .arp-toggle.active {
@@ -123,7 +122,6 @@
 .chaos-toggle:hover {
   background: rgba(255, 100, 100, 0.1);
   border-color: rgba(255, 100, 100, 0.5);
-  transform: translateY(-2px);
 }
 
 .chaos-toggle.active {
@@ -145,31 +143,30 @@
 }
 
 .damage-toggle {
-  padding: 8px 20px;
   background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 165, 0, 0.3);
   border-radius: 8px;
+  border: 2px solid rgba(255, 165, 0, 0.3);
   color: #ffa500;
-  font-weight: 700;
-  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
+  font-size: 0.9rem;
+  font-weight: 700;
   letter-spacing: 1px;
+  padding: 8px 20px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
 }
 
 .damage-toggle:hover {
   background: rgba(255, 165, 0, 0.1);
   border-color: rgba(255, 165, 0, 0.5);
-  transform: translateY(-2px);
 }
 
 .damage-toggle.active {
+  animation: pulse-damage 2s ease-in-out infinite;
   background: linear-gradient(135deg, #ffa500, #ff8c00);
   border-color: #ff8c00;
-  color: white;
   box-shadow: 0 4px 15px rgba(255, 165, 0, 0.4);
-  animation: pulse-damage 2s ease-in-out infinite;
+  color: white;
 }
 
 @keyframes pulse-damage {
@@ -208,7 +205,6 @@
 .fullscreen-toggle:hover {
   background: rgba(102, 126, 234, 0.1);
   border-color: rgba(102, 126, 234, 0.5);
-  transform: translateY(-2px);
 }
 
 .fullscreen-toggle.active {

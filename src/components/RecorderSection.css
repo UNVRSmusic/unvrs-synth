@@ -52,10 +52,12 @@
   transition: all 0.2s;
 }
 
-.record-btn:hover,
+.record-btn:hover {
+  background: #d3515e;
+}
+
 .download-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #4564ec 0%, #7a47ad 100%);
 }
 
 .record-btn.recording {
@@ -83,20 +85,19 @@
 
 .midi-btn,
 .clear-btn {
-  padding: 10px 20px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #ddd;
-  font-size: 0.9rem;
   cursor: pointer;
+  font-size: 0.9rem;
+  padding: 10px 20px;
   transition: all 0.2s;
 }
 
 .midi-btn:hover:not(:disabled),
 .clear-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #f173ff 0%, #ff455e 100%);
 }
 
 .midi-btn:disabled {
