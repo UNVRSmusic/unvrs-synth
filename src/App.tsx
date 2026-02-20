@@ -14,6 +14,7 @@ function App() {
     await engine.initialize();
     setAudioEngine(engine);
     setIsInitialized(true);
+    gtag("event", "initialized_audio");
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
