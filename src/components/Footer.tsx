@@ -17,6 +17,7 @@ const Footer = () => {
         Open source under{" "}
         <a
           href="https://github.com/UNVRSmusic/unvrs-synth/blob/main/LICENSE"
+          onClick={() => gtag("event", "see_licence_click")}
           rel="noopener noreferrer"
           target="_blank"
         >
