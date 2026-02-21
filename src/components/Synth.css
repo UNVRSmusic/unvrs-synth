@@ -210,8 +210,8 @@
 .fullscreen-toggle.active {
   background: linear-gradient(135deg, #667eea, #764ba2);
   border-color: #667eea;
-  color: white;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  color: white;
 }
 
 .fullscreen-toggle svg {
@@ -219,13 +219,13 @@
 }
 
 .synth-controls {
+  /* display: grid; */
+  /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-wrap: wrap;
-  /* display: grid; */
   gap: 20px;
-  /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
   padding: 20px;
 }
 

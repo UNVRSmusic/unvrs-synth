@@ -1,8 +1,13 @@
 .app {
-  width: 100%;
-  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  max-width: 1400px;
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .app {
+    padding: 20px;
+  }
 }
 
 h1 {
@@ -20,19 +25,19 @@ h1 {
 
 .version {
   font-size: 1rem;
-  opacity: 0.7;
   font-weight: 400;
   letter-spacing: 0.5px;
+  opacity: 0.7;
 }
 
 .init-screen {
-  position: relative;
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 20px;
   justify-content: center;
   min-height: 400px;
-  gap: 20px;
+  position: relative;
 }
 
 .init-button {
