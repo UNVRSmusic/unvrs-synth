@@ -30,6 +30,8 @@ export class AudioEngine {
   private filter2Q = 1;
   private filter2EnvAmount = 0;
 
+  // Lfo
+
   // Effects
   // Effect buses - voices connect to these, then routed to effects
   private dryBus: GainNode | null = null;
