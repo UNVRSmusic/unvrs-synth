@@ -233,13 +233,13 @@ export class Arpeggiator {
 
   getState() {
     return {
-      enabled: this.enabled,
-      mode: this.mode,
+      activeNotes: this.notes.size,
       bpm: this.bpm,
-      rate: this.rate,
+      enabled: this.enabled,
       hold: this.hold,
       isRunning: this.isRunning,
-      activeNotes: this.notes.size,
+      mode: this.mode,
+      rate: this.rate,
     };
   }
 }

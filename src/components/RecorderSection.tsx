@@ -221,9 +221,9 @@ const RecorderSection = ({ audioEngine }: RecorderSectionProps) => {
 
       <div className="midi-recorder">
         <button
-          onClick={downloadMIDI}
           className="midi-btn"
           disabled={midiEventCount === 0}
+          onClick={downloadMIDI}
           title={`${midiEventCount} MIDI events recorded`}
         >
           🎹 Download MIDI

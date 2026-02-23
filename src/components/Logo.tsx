@@ -1,13 +1,13 @@
 interface LogoProps {
   className?: string;
-  width?: number;
   height?: number;
+  width?: number;
 }
 
 export const Logo: React.FC<LogoProps> = ({
   className = "",
-  width,
   height,
+  width,
 }) => {
   // Aspect ratio is 280:60 = 14:3
   const aspectRatio = 280 / 60;

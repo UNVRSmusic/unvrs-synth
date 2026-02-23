@@ -53,12 +53,12 @@ const OscillatorSection = ({ audioEngine }: OscillatorSectionProps) => {
         <div className="control-group">
           <label>Noise: {noiseVolume.toFixed(2)}</label>
           <input
-            type="range"
-            min="0"
             max="1"
-            step="0.01"
-            value={noiseVolume}
+            min="0"
             onChange={handleNoiseVolumeChange}
+            step="0.01"
+            type="range"
+            value={noiseVolume}
           />
         </div>
 

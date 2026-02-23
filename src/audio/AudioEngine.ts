@@ -1,6 +1,6 @@
-import { Voice } from "./Voice";
-import { MIDIRecorder } from "./MIDIRecorder";
 import { Arpeggiator, ArpMode, ArpRate } from "./Arpeggiator";
+import { MIDIRecorder } from "./MIDIRecorder";
+import { Voice } from "./Voice";
 
 export class AudioEngine {
   private static instance: AudioEngine;
@@ -11,7 +11,6 @@ export class AudioEngine {
   private readonly MAX_VOICES = 16;
 
   // Synth parameters
-
   private isMonophonic = false;
   private waveType: OscillatorType = "sine";
   private noiseVolume = 0;

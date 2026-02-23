@@ -80,36 +80,36 @@ const FilterSection = ({ audioEngine, filterNumber }: FilterSectionProps) => {
         <div className="control-group">
           <label>Frequency</label>
           <input
-            type="range"
-            min="0"
             max={SLIDER_STEPS}
-            step="1"
-            value={freqToSlider(frequency)}
+            min="0"
             onChange={(e) => handleFrequencyChange(parseFloat(e.target.value))}
+            step="1"
+            type="range"
+            value={freqToSlider(frequency)}
           />
           <span className="value">{frequency.toFixed(0)} Hz</span>
         </div>
         <div className="control-group">
           <label>Resonance</label>
           <input
-            type="range"
-            min="0.1"
             max="20"
-            step="0.1"
-            value={q}
+            min="0.1"
             onChange={(e) => handleQChange(parseFloat(e.target.value))}
+            step="0.1"
+            type="range"
+            value={q}
           />
           <span className="value">{q.toFixed(1)}</span>
         </div>
         <div className="control-group">
           <label>Env Amount</label>
           <input
-            type="range"
-            min="0"
             max="1"
-            step="0.01"
-            value={envAmount}
+            min="0"
             onChange={(e) => handleEnvAmountChange(parseFloat(e.target.value))}
+            step="0.01"
+            type="range"
+            value={envAmount}
           />
           <span className="value">{envAmount.toFixed(2)}</span>
         </div>

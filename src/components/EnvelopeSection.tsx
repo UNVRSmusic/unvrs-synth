@@ -40,48 +40,48 @@ const EnvelopeSection = ({ audioEngine }: EnvelopeSectionProps) => {
         <div className="control-group">
           <label>Attack</label>
           <input
-            type="range"
-            min="0.001"
             max="2"
-            step="0.001"
-            value={attack}
+            min="0.001"
             onChange={(e) => handleAttackChange(parseFloat(e.target.value))}
+            step="0.001"
+            type="range"
+            value={attack}
           />
           <span className="value">{attack.toFixed(3)}s</span>
         </div>
         <div className="control-group">
           <label>Decay</label>
           <input
-            type="range"
-            min="0.001"
             max="2"
-            step="0.001"
-            value={decay}
+            min="0.001"
             onChange={(e) => handleDecayChange(parseFloat(e.target.value))}
+            step="0.001"
+            type="range"
+            value={decay}
           />
           <span className="value">{decay.toFixed(3)}s</span>
         </div>
         <div className="control-group">
           <label>Sustain</label>
           <input
-            type="range"
-            min="0"
             max="1"
-            step="0.01"
-            value={sustain}
+            min="0"
             onChange={(e) => handleSustainChange(parseFloat(e.target.value))}
+            step="0.01"
+            type="range"
+            value={sustain}
           />
           <span className="value">{sustain.toFixed(2)}</span>
         </div>
         <div className="control-group">
           <label>Release</label>
           <input
-            type="range"
-            min="0.001"
             max="3"
-            step="0.001"
-            value={release}
+            min="0.001"
             onChange={(e) => handleReleaseChange(parseFloat(e.target.value))}
+            step="0.001"
+            type="range"
+            value={release}
           />
           <span className="value">{release.toFixed(3)}s</span>
         </div>

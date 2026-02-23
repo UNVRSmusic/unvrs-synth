@@ -42,50 +42,50 @@ const EffectsSection = ({ audioEngine }: EffectsSectionProps) => {
         <div className="control-group">
           <label>Delay Time</label>
           <input
-            type="range"
-            min="0.01"
             max="2"
-            step="0.01"
-            value={delayTime}
+            min="0.01"
             onChange={(e) => handleDelayTimeChange(parseFloat(e.target.value))}
+            step="0.01"
+            type="range"
+            value={delayTime}
           />
           <span className="value">{delayTime.toFixed(2)}s</span>
         </div>
         <div className="control-group">
           <label>Delay Feedback</label>
           <input
-            type="range"
-            min="0"
             max="0.95"
-            step="0.01"
-            value={delayFeedback}
+            min="0"
             onChange={(e) =>
               handleDelayFeedbackChange(parseFloat(e.target.value))
             }
+            step="0.01"
+            type="range"
+            value={delayFeedback}
           />
           <span className="value">{(delayFeedback * 100).toFixed(0)}%</span>
         </div>
         <div className="control-group">
           <label>Delay Mix</label>
           <input
-            type="range"
-            min="0"
             max="1"
-            step="0.01"
-            value={delayMix}
+            min="0"
             onChange={(e) => handleDelayMixChange(parseFloat(e.target.value))}
+            step="0.01"
+            type="range"
+            value={delayMix}
           />
           <span className="value">{(delayMix * 100).toFixed(0)}%</span>
         </div>
         <div className="control-group">
           <label>Reverb Mix</label>
           <input
-            type="range"
-            min="0"
             max="1"
-            step="0.01"
-            value={reverbMix}
+            min="0"
             onChange={(e) => handleReverbMixChange(parseFloat(e.target.value))}
+            step="0.01"
+            type="range"
+            value={reverbMix}
           />
           <span className="value">{(reverbMix * 100).toFixed(0)}%</span>
         </div>

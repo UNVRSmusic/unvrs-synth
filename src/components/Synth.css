@@ -50,14 +50,14 @@
 }
 
 .octave-value {
-  padding: 5px 15px;
   background: rgba(102, 126, 234, 0.2);
-  border: 1px solid rgba(102, 126, 234, 0.4);
   border-radius: 6px;
+  border: 1px solid rgba(102, 126, 234, 0.4);
   color: #667eea;
   font-family: "Courier New", monospace;
   font-weight: bold;
   min-width: 40px;
+  padding: 5px 15px;
   text-align: center;
 }
 
@@ -97,8 +97,8 @@
 .arp-toggle.active {
   background: linear-gradient(135deg, #667eea, #764ba2);
   border-color: #667eea;
-  color: white;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  color: white;
 }
 
 .arp-toggle svg {
@@ -106,17 +106,17 @@
 }
 
 .chaos-toggle {
-  padding: 8px 20px;
   background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 100, 100, 0.3);
   border-radius: 8px;
+  border: 2px solid rgba(255, 100, 100, 0.3);
   color: #ff6464;
-  font-weight: 700;
-  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
+  font-size: 0.9rem;
+  font-weight: 700;
   letter-spacing: 1px;
+  padding: 8px 20px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
 }
 
 .chaos-toggle:hover {
@@ -125,11 +125,11 @@
 }
 
 .chaos-toggle.active {
+  animation: pulse 2s ease-in-out infinite;
   background: linear-gradient(135deg, #ff6464, #ff4444);
   border-color: #ff4444;
-  color: white;
   box-shadow: 0 4px 15px rgba(255, 100, 100, 0.4);
-  animation: pulse 2s ease-in-out infinite;
+  color: white;
 }
 
 @keyframes pulse {

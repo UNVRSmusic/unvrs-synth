@@ -1,11 +1,11 @@
 .synth-footer {
-  text-align: center;
-  padding: 20px;
-  margin-top: 10px;
-  color: #666;
-  font-size: 0.85rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 10px;
+  padding: 20px;
+  text-align: center;
 }
 
 .synth-footer p {
@@ -14,9 +14,9 @@
 
 .synth-footer a {
   color: #667eea;
+  font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
-  font-weight: 600;
 }
 
 .synth-footer a:hover {
