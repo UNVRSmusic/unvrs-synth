@@ -42,13 +42,13 @@
 
 .record-btn,
 .download-btn {
-  padding: 10px 20px;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #ddd;
-  font-size: 0.9rem;
   cursor: pointer;
+  font-size: 0.9rem;
+  padding: 10px 20px;
   transition: all 0.2s;
 }
 
@@ -61,10 +61,10 @@
 }
 
 .record-btn.recording {
+  animation: pulse 1.5s infinite;
   background: #dc3545;
   border-color: #dc3545;
   color: white;
-  animation: pulse 1.5s infinite;
 }
 
 .download-btn {
@@ -101,8 +101,8 @@
 }
 
 .midi-btn:disabled {
-  opacity: 0.4;
   cursor: not-allowed;
+  opacity: 0.4;
 }
 
 .midi-btn {
