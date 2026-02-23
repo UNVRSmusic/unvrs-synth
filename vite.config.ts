@@ -8,27 +8,4 @@ export default defineConfig(({ command }) => ({
   server: {
     port: 3000,
   },
-  build: {
-    // Optimize chunk size and splitting for better caching
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Separate vendor code for better caching
-          vendor: ["react", "react-dom"],
-          // Audio engine in separate chunk
-          audio: ["./src/audio/AudioEngine.ts", "./src/audio/Voice.ts"],
-        },
-      },
-    },
-    // Target modern browsers for smaller builds
-    target: "esnext",
-    // Enable minification
-    minify: "terser",
-    // Optimize for gzip/brotli compression
-    terserOptions: {
-      compress: {
-        drop_console: true,
-      },
-    },
-  },
 }));
